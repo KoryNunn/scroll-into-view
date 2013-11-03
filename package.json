@@ -1,0 +1,21 @@
+{
+  "name": "scroll-into-view",
+  "version": "0.0.0",
+  "description": "",
+  "main": "scrollIntoView.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "BSD",
+  "dependencies": {
+    "tape": "~2.1.0"
+  },
+  "devDependencies": {
+    "tape": "~2.1.0",
+    "crel": "~1.1.0"
+  }
+}
