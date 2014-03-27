@@ -1,6 +1,6 @@
 {
   "name": "scroll-into-view",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "scrollIntoView.js",
   "directories": {
@@ -16,6 +16,6 @@
   },
   "devDependencies": {
     "tape": "~2.1.0",
-    "crel": "~1.1.0"
+    "crel": "^1.1.1"
   }
 }
