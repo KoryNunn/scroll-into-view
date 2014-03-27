@@ -15,8 +15,8 @@ module.exports = function(target){
             parentOverflow !== 'scrollX' ||
             parentOverflow !== 'scrollY'
         ){
-            parent.scrollTop = target.offsetTop + Math.min(targetPosition.height, parent.clientHeight) / 2;
-            parent.scrollLeft = target.offsetTop + Math.min(targetPosition.width, parent.clientWidth) / 2;
+            parent.scrollTop = target.offsetTop + (targetPosition.height / 2) - parent.clientHeight / 2;
+            parent.scrollLeft = target.offsetTop + (targetPosition.width / 2) - parent.clientWidth / 2;
         }
 
         parent = parent.parentNode;
