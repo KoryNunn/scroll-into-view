@@ -17,7 +17,6 @@ module.exports = function(target){
         ){
             parent.scrollTop += targetPosition.top - parent.clientHeight / 2;
             parent.scrollLeft += targetPosition.left - parent.clientWidth / 2;
-            console.log(targetPosition);
         }
 
         parent = parent.parentNode;
