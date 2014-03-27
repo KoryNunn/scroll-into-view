@@ -16,6 +16,6 @@
   },
   "devDependencies": {
     "tape": "~2.1.0",
-    "crel": "~1.1.0"
+    "crel": "^1.1.1"
   }
 }
