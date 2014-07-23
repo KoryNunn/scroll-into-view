@@ -18,8 +18,8 @@ function getTargetScrollLocation(target, parent){
     if(parent === window){
         x = targetPosition.left + window.scrollX - window.innerWidth / 2 + Math.min(targetPosition.width, window.innerWidth) / 2;
         y = targetPosition.top + window.scrollY - window.innerHeight / 2 + Math.min(targetPosition.height, window.innerHeight) / 2;
-        x = Math.max(Math.min(x, document.body.clientWidth - window.innerWidth), 0);
-        y = Math.max(Math.min(y, document.body.clientHeight - window.innerHeight), 0);
+        x = Math.max(Math.min(x, document.body.clientWidth - window.innerWidth / 2), 0);
+        y = Math.max(Math.min(y, document.body.clientHeight - window.innerHeight / 2), 0);
         differenceX = x - window.scrollX;
         differenceY = y - window.scrollY;
     }else{
@@ -71,7 +71,7 @@ module.exports = function(target){
         return;
     }
 
-    var parent = target.parentNode,
+    var parent = target.parentElement,
         targetPosition = target.getBoundingClientRect(),
         parentOverflow;
 
@@ -86,7 +86,7 @@ module.exports = function(target){
             transitionScrollTo(target, parent);
         }
 
-        parent = parent.parentNode;
+        parent = parent.parentElement;
     }
 
     transitionScrollTo(target, window);
