@@ -6,14 +6,15 @@
   "directories": {
     "test": "test"
   },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:KoryNunn/scroll-into-view.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "BSD",
-  "dependencies": {
-    "tape": "~2.1.0"
-  },
   "devDependencies": {
     "tape": "~2.1.0",
     "crel": "^1.1.1"
