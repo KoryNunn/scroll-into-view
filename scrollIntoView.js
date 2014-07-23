@@ -10,6 +10,7 @@ function setElementScroll(element, x, y){
 
 function getTargetScrollLocation(target, parent){
     var targetPosition = target.getBoundingClientRect(),
+        parentPosition,
         x,
         y,
         differenceX,
@@ -23,8 +24,11 @@ function getTargetScrollLocation(target, parent){
         differenceX = x - window.scrollX;
         differenceY = y - window.scrollY;
     }else{
-        x = Math.min(target.offsetLeft + (targetPosition.width / 2) - parent.clientWidth / 2, target.offsetLeft);
-        y = Math.min(target.offsetTop + (targetPosition.height / 2) - parent.clientHeight / 2, target.offsetTop);
+        parentPosition = parent.getBoundingClientRect();
+        var offsetTop = targetPosition.top - (parentPosition.top - parent.scrollTop);
+        var offsetLeft = targetPosition.left - (parentPosition.left - parent.scrollLeft);
+        x = offsetLeft + (targetPosition.width / 2) - parent.clientWidth / 2;
+        y = offsetTop + (targetPosition.height / 2) - parent.clientHeight / 2;
         x = Math.max(Math.min(x, parent.scrollWidth - parent.clientWidth), 0);
         y = Math.max(Math.min(y, parent.scrollHeight - parent.clientHeight), 0);
         differenceX = x - parent.scrollLeft;
@@ -76,12 +80,9 @@ module.exports = function(target){
         parentOverflow;
 
     while(parent && parent.tagName !== 'BODY'){
-        parentOverflow = window.getComputedStyle(parent).overflow;
         if(
-            parentOverflow === 'auto' ||
-            parentOverflow === 'scroll' ||
-            parentOverflow === 'scrollX' ||
-            parentOverflow === 'scrollY'
+            parent.scrollHeight !== parent.clientHeight ||
+            parent.scrollWidth !== parent.clientWidth
         ){
             transitionScrollTo(target, parent);
         }
