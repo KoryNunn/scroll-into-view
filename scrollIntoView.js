@@ -1,12 +1,5 @@
-function setElementScroll(element, x, y){
-    if(element === window){
-        element.scrollTo(x, y);
-    }else{
-
-        element.scrollLeft = x;
-        element.scrollTop = y;
-    }
-}
+var targetElement,
+    animationId;
 
 function getTargetScrollLocation(target, parent){
     var targetPosition = target.getBoundingClientRect(),
@@ -43,52 +36,67 @@ function getTargetScrollLocation(target, parent){
     };
 }
 
-function transitionScrollTo(target, parent, startTime){
-    if(!startTime){
-        startTime = +new Date();
+function setElementScroll(element, x, y){
+    if(element === window){
+        element.scrollTo(x, y);
+    }else{
+
+        element.scrollLeft = x;
+        element.scrollTop = y;
     }
-
-    requestAnimationFrame(function(){
-        var location = getTargetScrollLocation(target, parent);
-
-        if(new Date() - startTime > 350){
-            // Give up and set the scroll position
-            setElementScroll(parent,
-                location.x,
-                location.y
-            );
-            return;
-        }
-        setElementScroll(parent,
-            location.x - location.differenceX * 0.3,
-            location.y - location.differenceY * 0.3
-        );
-
-        if(Math.abs(location.differenceY) > 1 || Math.abs(location.differenceX) > 1){
-            transitionScrollTo(target, parent, startTime);
-        }
-    });
 }
 
-module.exports = function(target){
+module.exports = function scrollTo(target, stepValue){
     if(!target){
         return;
     }
 
-    var parent = target.parentElement,
-        targetPosition = target.getBoundingClientRect(),
-        parentOverflow;
+    stepValue = stepValue || 0.3;
+
+    targetElement = target;
+
+    function run(parent, startTime){
+        animationId = requestAnimationFrame(function(){
+            if(target !== targetElement) {
+                cancelAnimationFrame(animationId);
+                target = targetElement;
+                startTime = +new Date();
+            }
+
+            var location = getTargetScrollLocation(target, parent);
+
+            if(new Date() - startTime > 100 / stepValue){
+                // Give up
+                return;
+            }
+
+            setElementScroll(parent,
+                location.x - (location.differenceX - location.differenceX * stepValue),
+                location.y - (location.differenceY - location.differenceY * stepValue)
+            );
+
+            if(Math.abs(location.differenceY) > 1 || Math.abs(location.differenceX) > 1){
+                run(parent, startTime);
+            }
+        });
+    }
+
+    function transitionScrollTo(parent){
+        run(parent, +new Date());
+    }
+
+    var parent = target.parentElement;
 
     while(parent && parent.tagName !== 'BODY'){
         if(
             parent.scrollHeight !== parent.clientHeight ||
             parent.scrollWidth !== parent.clientWidth
         ){
-            transitionScrollTo(target, parent);
+            transitionScrollTo(parent);
         }
 
         parent = parent.parentElement;
     }
 
-    transitionScrollTo(target, window);
+    transitionScrollTo(window);
 };
