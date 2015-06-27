@@ -73,7 +73,7 @@ module.exports = function scrollTo(target, animationTime, curve){
 
             var location = getTargetScrollLocation(target, parent),
                 currentTime = Date.now(),
-                curvePosition = ((animationTime - (endTime - currentTime)) / animationTime);
+                curvePosition = (animationTime - (endTime - currentTime)) / animationTime;
 
             if(currentTime > endTime){
                 // Give up
@@ -92,7 +92,7 @@ module.exports = function scrollTo(target, animationTime, curve){
     }
 
     function transitionScrollTo(parent){
-        run(parent, +new Date());
+        run(parent, Date.now());
     }
 
     while(parent && parent.tagName !== 'BODY'){
