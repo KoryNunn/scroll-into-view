@@ -18,5 +18,8 @@
   "devDependencies": {
     "tape": "~2.1.0",
     "crel": "^1.1.1"
+  },
+  "dependencies": {
+    "bezier-easing": "^0.4.5"
   }
 }

@@ -1,12 +1,6 @@
-function setElementScroll(element, x, y){
-    if(element === window){
-        element.scrollTo(x, y);
-    }else{
-
-        element.scrollLeft = x;
-        element.scrollTop = y;
-    }
-}
+var targetElement,
+    animationId,
+    Bezier = require('bezier-easing');
 
 function getTargetScrollLocation(target, parent){
     var targetPosition = target.getBoundingClientRect(),
@@ -16,7 +10,7 @@ function getTargetScrollLocation(target, parent){
         differenceX,
         differenceY;
 
-    if(parent === window){
+    if(parent === window || parent === document.body){
         x = targetPosition.left + window.scrollX - window.innerWidth / 2 + Math.min(targetPosition.width, window.innerWidth) / 2;
         y = targetPosition.top + window.scrollY - window.innerHeight / 2 + Math.min(targetPosition.height, window.innerHeight) / 2;
         x = Math.max(Math.min(x, document.body.clientWidth - window.innerWidth / 2), 0);
@@ -43,52 +37,73 @@ function getTargetScrollLocation(target, parent){
     };
 }
 
-function transitionScrollTo(target, parent, startTime){
-    if(!startTime){
-        startTime = +new Date();
+function setElementScroll(element, x, y){
+    if(element === window){
+        element.scrollTo(x, y);
+    }else{
+
+        element.scrollLeft = x;
+        element.scrollTop = y;
     }
-
-    requestAnimationFrame(function(){
-        var location = getTargetScrollLocation(target, parent);
-
-        if(new Date() - startTime > 350){
-            // Give up and set the scroll position
-            setElementScroll(parent,
-                location.x,
-                location.y
-            );
-            return;
-        }
-        setElementScroll(parent,
-            location.x - location.differenceX * 0.3,
-            location.y - location.differenceY * 0.3
-        );
-
-        if(Math.abs(location.differenceY) > 1 || Math.abs(location.differenceX) > 1){
-            transitionScrollTo(target, parent, startTime);
-        }
-    });
 }
 
-module.exports = function(target){
+module.exports = function scrollTo(target, animationTime, curve){
     if(!target){
         return;
     }
 
-    var parent = target.parentElement,
-        targetPosition = target.getBoundingClientRect(),
-        parentOverflow;
+    animationTime = animationTime || 750;
+    curve = curve || 'ease';
+
+    var easing = typeof curve === 'string' ? Bezier.css[curve]: Bezier.apply(null, curve),
+        parent = target.parentElement,
+        location = getTargetScrollLocation(target, parent),
+        endTime = Date.now() + animationTime;
+
+    targetElement = target;
+
+    function run(parent, startTime){
+        animationId = requestAnimationFrame(function(){
+            if(target !== targetElement) {
+                cancelAnimationFrame(animationId);
+                target = targetElement;
+                endTime = Date.now() + animationTime;
+                location = getTargetScrollLocation(target, parent);
+            }
+
+            var currentTime = Date.now(),
+                curvePosition = (animationTime - (endTime - currentTime)) / animationTime;
+
+            if(currentTime > endTime){
+                // Give up
+                return;
+            }
+
+            setElementScroll(parent,
+                location.x - (location.differenceX - location.differenceX * easing(curvePosition)),
+                location.y - (location.differenceY - location.differenceY * easing(curvePosition))
+            );
+
+            if(Math.abs(location.differenceY) > 1 || Math.abs(location.differenceX) > 1){
+                run(parent, startTime);
+            }
+        });
+    }
+
+    function transitionScrollTo(parent){
+        run(parent, Date.now());
+    }
 
     while(parent && parent.tagName !== 'BODY'){
         if(
             parent.scrollHeight !== parent.clientHeight ||
             parent.scrollWidth !== parent.clientWidth
         ){
-            transitionScrollTo(target, parent);
+            transitionScrollTo(parent);
         }
 
         parent = parent.parentElement;
     }
 
-    transitionScrollTo(target, window);
+    transitionScrollTo(window);
 };
