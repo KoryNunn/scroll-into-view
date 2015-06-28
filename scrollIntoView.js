@@ -52,7 +52,7 @@ module.exports = function scrollTo(target, animationTime, curve){
         return;
     }
 
-    animationTime = animationTime || 1000;
+    animationTime = animationTime || 750;
     curve = curve || 'ease';
 
     var easing = typeof curve === 'string' ? Bezier.css[curve]: Bezier.apply(null, curve),

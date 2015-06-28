@@ -24,4 +24,4 @@ Also accepts familiar css timing functions: ease, linear, ease-in, ease-out, eas
 
     scrollIntoView(someElement, 2000, 'ease-out')
 
-Defaults set to 1000ms and 'ease'.
+Defaults set to 750ms and 'ease'.
