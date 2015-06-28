@@ -57,7 +57,7 @@ module.exports = function scrollTo(target, animationTime, curve){
 
     var easing = typeof curve === 'string' ? Bezier.css[curve]: Bezier.apply(null, curve),
         parent = target.parentElement,
-        initialPosition = getTargetScrollLocation(target, parent),
+        location = getTargetScrollLocation(target, parent),
         endTime = Date.now() + animationTime;
 
     targetElement = target;
@@ -68,11 +68,10 @@ module.exports = function scrollTo(target, animationTime, curve){
                 cancelAnimationFrame(animationId);
                 target = targetElement;
                 endTime = Date.now() + animationTime;
-                initialPosition = getTargetScrollLocation(target, parent);
+                location = getTargetScrollLocation(target, parent);
             }
 
-            var location = getTargetScrollLocation(target, parent),
-                currentTime = Date.now(),
+            var currentTime = Date.now(),
                 curvePosition = (animationTime - (endTime - currentTime)) / animationTime;
 
             if(currentTime > endTime){
@@ -81,8 +80,8 @@ module.exports = function scrollTo(target, animationTime, curve){
             }
 
             setElementScroll(parent,
-                location.x - (initialPosition.differenceX - initialPosition.differenceX * easing(curvePosition)),
-                location.y - (initialPosition.differenceY - initialPosition.differenceY * easing(curvePosition))
+                location.x - (location.differenceX - location.differenceX * easing(curvePosition)),
+                location.y - (location.differenceY - location.differenceY * easing(curvePosition))
             );
 
             if(Math.abs(location.differenceY) > 1 || Math.abs(location.differenceX) > 1){
