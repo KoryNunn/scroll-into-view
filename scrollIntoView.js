@@ -43,52 +43,92 @@ function getTargetScrollLocation(target, parent){
     };
 }
 
-function transitionScrollTo(target, parent, startTime){
-    if(!startTime){
-        startTime = +new Date();
-    }
-
+function animate(parent){
     requestAnimationFrame(function(){
-        var location = getTargetScrollLocation(target, parent);
+        var scrollSettings = parent._scrollSettings,
+            location = getTargetScrollLocation(scrollSettings.target, parent),
+            time = Date.now() - scrollSettings.startTime,
+            timeValue = 1 / scrollSettings.time * time;
 
-        if(new Date() - startTime > 350){
-            // Give up and set the scroll position
-            setElementScroll(parent,
-                location.x,
-                location.y
-            );
-            return;
+        if(
+            time > scrollSettings.time || 
+            (Math.abs(location.differenceY) <= 1 && Math.abs(location.differenceX) <= 1)
+        ){
+            parent._scrollSettings = null;
+            return scrollSettings.callback();
         }
+
+        // Attempt to flatten out the value a little..
+        // ToDo: Flatten properly.
+        var valueX = scrollSettings.ease(Math.abs(Math.pow(timeValue,2) - timeValue)),
+            valueY = scrollSettings.ease(Math.abs(Math.pow(timeValue,2) - timeValue));
+
         setElementScroll(parent,
-            location.x - location.differenceX * 0.3,
-            location.y - location.differenceY * 0.3
+            location.x - (location.differenceX - location.differenceX * valueX),
+            location.y - (location.differenceY - location.differenceY * valueY)
         );
 
-        if(Math.abs(location.differenceY) > 1 || Math.abs(location.differenceX) > 1){
-            transitionScrollTo(target, parent, startTime);
-        }
+        animate(parent);
     });
 }
 
-module.exports = function(target){
+function transitionScrollTo(target, parent, settings, callback){
+    var scrollSettings = {
+            startTime: Date.now(),
+            target: target,
+            time: settings.time,
+            ease: settings.ease,
+            callback: callback
+        };
+
+    if(!parent._scrollSettings){
+        parent._scrollSettings = scrollSettings;
+        animate(parent);
+    }else{
+        parent._scrollSettings.callback();
+        parent._scrollSettings = scrollSettings;
+    }
+}
+
+module.exports = function(target, settings, callback){
     if(!target){
         return;
     }
 
-    var parent = target.parentElement,
-        targetPosition = target.getBoundingClientRect(),
-        parentOverflow;
+    if(typeof settings === 'function'){
+        callback = settings;
+        settings = null;
+    }
+
+    if(!settings){
+        settings = {};
+    }
+
+    settings.time = settings.time || 1000;
+    settings.ease = settings.ease || function(v){return v;};
+
+    var parent = target.parentElement;
+
+    var parents = 0;
+    function done(){
+        parents--;
+        if(!parents){
+            callback && callback();
+        }
+    }
 
     while(parent && parent.tagName !== 'BODY'){
         if(
             parent.scrollHeight !== parent.clientHeight ||
             parent.scrollWidth !== parent.clientWidth
         ){
-            transitionScrollTo(target, parent);
+            parents++;
+            transitionScrollTo(target, parent, settings, done);
         }
 
         parent = parent.parentElement;
     }
 
-    transitionScrollTo(target, window);
+    parents++;
+    transitionScrollTo(target, window, settings, done);
 };
