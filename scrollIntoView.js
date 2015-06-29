@@ -85,6 +85,7 @@ module.exports = function(target){
             parent.scrollWidth !== parent.clientWidth
         ){
             transitionScrollTo(target, parent);
+            return;
         }
 
         parent = parent.parentElement;
