@@ -45,8 +45,12 @@ function getTargetScrollLocation(target, parent){
 
 function animate(parent){
     requestAnimationFrame(function(){
-        var scrollSettings = parent._scrollSettings,
-            location = getTargetScrollLocation(scrollSettings.target, parent),
+        var scrollSettings = parent._scrollSettings;
+        if(!scrollSettings){
+            return;
+        }
+
+        var location = getTargetScrollLocation(scrollSettings.target, parent),
             time = Date.now() - scrollSettings.startTime,
             timeValue = 1 / scrollSettings.time * time;
 
@@ -55,7 +59,7 @@ function animate(parent){
             (Math.abs(location.differenceY) <= 1 && Math.abs(location.differenceX) <= 1)
         ){
             parent._scrollSettings = null;
-            return scrollSettings.callback();
+            return scrollSettings.end();
         }
 
         // Attempt to flatten out the value a little..
@@ -73,20 +77,29 @@ function animate(parent){
 }
 
 function transitionScrollTo(target, parent, settings, callback){
-    var scrollSettings = {
-            startTime: Date.now(),
-            target: target,
-            time: settings.time,
-            ease: settings.ease,
-            callback: callback
-        };
+    var idle = !parent._scrollSettings;
 
-    if(!parent._scrollSettings){
-        parent._scrollSettings = scrollSettings;
+    if(parent._scrollSettings){
+        parent._scrollSettings.end();
+    }
+
+    function end(){
+        parent._scrollSettings = null;
+        callback();
+        parent.removeEventListener('touchstart', end);
+    }
+
+    parent._scrollSettings = {
+        startTime: Date.now(),
+        target: target,
+        time: settings.time,
+        ease: settings.ease,
+        end: end
+    };
+    parent.addEventListener('touchstart', end);    
+
+    if(idle){
         animate(parent);
-    }else{
-        parent._scrollSettings.callback();
-        parent._scrollSettings = scrollSettings;
     }
 }
 
@@ -107,9 +120,9 @@ module.exports = function(target, settings, callback){
     settings.time = settings.time || 1000;
     settings.ease = settings.ease || function(v){return v;};
 
-    var parent = target.parentElement;
+    var parent = target.parentElement,
+        parents = 0;
 
-    var parents = 0;
     function done(){
         parents--;
         if(!parents){
@@ -119,8 +132,11 @@ module.exports = function(target, settings, callback){
 
     while(parent && parent.tagName !== 'BODY'){
         if(
-            parent.scrollHeight !== parent.clientHeight ||
-            parent.scrollWidth !== parent.clientWidth
+            (
+                parent.scrollHeight !== parent.clientHeight ||
+                parent.scrollWidth !== parent.clientWidth
+            ) &&
+            getComputedStyle(parent).overflow !== 'hidden'
         ){
             parents++;
             transitionScrollTo(target, parent, settings, done);
