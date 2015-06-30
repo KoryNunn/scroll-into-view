@@ -132,3 +132,35 @@ test('hijack', function(t) {
         }, 500);
     });
 });
+
+test('invalid target', function(t) {
+    var target;
+
+    t.plan(1);
+
+    queue(function(next){
+
+        crel(document.body,
+            crel('div', {'style':'position:relative; height:5000px; overflow: scroll;'},
+                crel('div', {'style':'position:relative; font-size:20em; overflow: scroll;display:inline-block'},
+                    target = crel('span', {'style':'position:absolute; top:75%; left: 75%; box-shadow: 0 0 10px 10px red;'}),
+                    crel('div', {style: 'white-space:nowrap;'}, 'TEXT-AND-THAT-TO-MAKE-STUFF-HELA-WIDE'),
+                    crel('div', {style: 'white-space:nowrap;'}, 'TEXT-AND-THAT-TO-MAKE-STUFF-HELA-WIDE'),
+                    crel('div', {style: 'white-space:nowrap;'}, 'TEXT-AND-THAT-TO-MAKE-STUFF-HELA-WIDE')
+                )
+            )
+        );
+
+        scrollIntoView(
+            target, 
+            {
+                validTarget: function(target){
+                    return target !== window;
+                }
+            },
+            function(){
+                t.pass();
+            }
+        );
+    });
+});

@@ -130,8 +130,10 @@ module.exports = function(target, settings, callback){
         }
     }
 
-    while(parent && parent.tagName !== 'BODY'){
+    while(parent){
         if(
+            settings.validTarget ? settings.validTarget(parent, parents) : true &&
+            parent === window ||
             (
                 parent.scrollHeight !== parent.clientHeight ||
                 parent.scrollWidth !== parent.clientWidth
@@ -143,8 +145,13 @@ module.exports = function(target, settings, callback){
         }
 
         parent = parent.parentElement;
-    }
 
-    parents++;
-    transitionScrollTo(target, window, settings, done);
+        if(!parent){
+            return;
+        }
+
+        if(parent.tagName === 'BODY'){
+            parent = window;
+        }
+    }
 };
