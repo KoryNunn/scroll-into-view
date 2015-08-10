@@ -1,6 +1,6 @@
 {
   "name": "scroll-into-view",
-  "version": "1.0.7",
+  "version": "1.2.0",
   "description": "",
   "main": "scrollIntoView.js",
   "directories": {
@@ -11,7 +11,8 @@
     "url": "git@github.com:KoryNunn/scroll-into-view.git"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "watchify test/test.js -d -o test/test.browser.js"
   },
   "author": "",
   "license": "BSD",
