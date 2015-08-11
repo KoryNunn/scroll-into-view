@@ -1,3 +1,5 @@
+var raf = require('raf');
+
 function setElementScroll(element, x, y){
     if(element === window){
         element.scrollTo(x, y);
@@ -44,7 +46,7 @@ function getTargetScrollLocation(target, parent){
 }
 
 function animate(parent){
-    requestAnimationFrame(function(){
+    raf(function(){
         var scrollSettings = parent._scrollSettings;
         if(!scrollSettings){
             return;
