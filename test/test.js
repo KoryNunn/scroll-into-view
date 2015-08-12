@@ -164,3 +164,34 @@ test('invalid target', function(t) {
         );
     });
 });
+
+test('body height less than scroll height', function(t) {
+    var target;
+
+    t.plan(1);
+
+    queue(function(next){
+
+        crel(document.documentElement, {'style': 'height: 100%'},
+            crel(document.body, {'style':'height: 100%'},
+                crel('div', {'style':'position:relative; height:5000px;'},
+                    crel('div', {'style':'position:relative; font-size:20em; display:inline-block'},
+                        target = crel('span', {'style':'position:absolute; top:75%; left: 75%; box-shadow: 0 0 10px 10px red;'}),
+                        crel('div', {style: 'white-space:nowrap;'}, 'TEXT-AND-THAT-TO-MAKE-STUFF-HELA-WIDE'),
+                        crel('div', {style: 'white-space:nowrap;'}, 'TEXT-AND-THAT-TO-MAKE-STUFF-HELA-WIDE'),
+                        crel('div', {style: 'white-space:nowrap;'}, 'TEXT-AND-THAT-TO-MAKE-STUFF-HELA-WIDE')
+                    )
+                )
+            )
+        );
+
+        scrollIntoView(target, function(){
+            t.ok(
+                target.getBoundingClientRect().top < window.innerHeight &&
+                target.getBoundingClientRect().left < window.innerWidth,
+                'target was in view'
+            );
+            next();
+        });
+    });
+});
