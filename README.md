@@ -31,3 +31,11 @@ You can pass a callback that will be called when all scrolling has been complete
     scrollIntoView(someElement [, settings], function(){
         // Scrolling done.
     })
+
+## Testing
+
+Testing scrolling is really hard without stuff like webdriver, but what's there works ok for the moment.
+
+The tests will attempt to launch google-chrome. If you don't have chrome, lol just kidding you do.
+
+    npm run test

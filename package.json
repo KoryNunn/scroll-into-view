@@ -11,7 +11,7 @@
     "url": "git@github.com:KoryNunn/scroll-into-view.git"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "browserify test/test.js -d -o test/test.browser.js && google-chrome ./test/test.html",
     "watch": "watchify test/test.js -d -o test/test.browser.js"
   },
   "author": "",
