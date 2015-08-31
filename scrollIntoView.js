@@ -4,7 +4,6 @@ function setElementScroll(element, x, y){
     if(element === window){
         element.scrollTo(x, y);
     }else{
-
         element.scrollLeft = x;
         element.scrollTop = y;
     }
@@ -58,24 +57,23 @@ function animate(parent){
 
         var location = getTargetScrollLocation(scrollSettings.target, parent, scrollSettings.align),
             time = Date.now() - scrollSettings.startTime,
-            timeValue = 1 / scrollSettings.time * time;
+            timeValue = Math.min(1 / scrollSettings.time * time, 1);
 
         if(
-            time > scrollSettings.time ||
+            time > scrollSettings.time + 20 ||
             (Math.abs(location.differenceY) <= 1 && Math.abs(location.differenceX) <= 1)
         ){
+            setElementScroll(parent, location.x, location.y);
             parent._scrollSettings = null;
             return scrollSettings.end();
         }
 
-        // Attempt to flatten out the value a little..
-        // ToDo: Flatten properly.
-        var valueX = scrollSettings.ease(Math.abs(Math.pow(timeValue,2) - timeValue)),
-            valueY = scrollSettings.ease(Math.abs(Math.pow(timeValue,2) - timeValue));
+        var valueX = timeValue,
+            valueY = timeValue;
 
         setElementScroll(parent,
-            location.x - (location.differenceX - location.differenceX * valueX),
-            location.y - (location.differenceY - location.differenceY * valueY)
+            location.x - location.differenceX * Math.pow(1 - valueX, valueX / 2),
+            location.y - location.differenceY * Math.pow(1 - valueY, valueY / 2)
         );
 
         animate(parent);
