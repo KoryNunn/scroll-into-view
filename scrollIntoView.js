@@ -10,27 +10,31 @@ function setElementScroll(element, x, y){
     }
 }
 
-function getTargetScrollLocation(target, parent){
+function getTargetScrollLocation(target, parent, align){
     var targetPosition = target.getBoundingClientRect(),
         parentPosition,
         x,
         y,
         differenceX,
-        differenceY;
+        differenceY,
+        leftAlign = align && align.left != null ? align.left : 0.5,
+        topAlign = align && align.top != null ? align.top : 0.5,
+        leftScalar = leftAlign,
+        topScalar = topAlign;
 
     if(parent === window){
-        x = targetPosition.left + window.scrollX - window.innerWidth / 2 + Math.min(targetPosition.width, window.innerWidth) / 2;
-        y = targetPosition.top + window.scrollY - window.innerHeight / 2 + Math.min(targetPosition.height, window.innerHeight) / 2;
-        x = Math.max(Math.min(x, document.body.scrollWidth - window.innerWidth / 2), 0);
-        y = Math.max(Math.min(y, document.body.scrollHeight- window.innerHeight / 2), 0);
+        x = targetPosition.left + window.scrollX - window.innerWidth * leftScalar + Math.min(targetPosition.width, window.innerWidth) * leftScalar;
+        y = targetPosition.top + window.scrollY - window.innerHeight * topScalar + Math.min(targetPosition.height, window.innerHeight) * topScalar;
+        x = Math.max(Math.min(x, document.body.scrollWidth - window.innerWidth * leftScalar), 0);
+        y = Math.max(Math.min(y, document.body.scrollHeight- window.innerHeight * topScalar), 0);
         differenceX = x - window.scrollX;
         differenceY = y - window.scrollY;
     }else{
         parentPosition = parent.getBoundingClientRect();
         var offsetTop = targetPosition.top - (parentPosition.top - parent.scrollTop);
         var offsetLeft = targetPosition.left - (parentPosition.left - parent.scrollLeft);
-        x = offsetLeft + (targetPosition.width / 2) - parent.clientWidth / 2;
-        y = offsetTop + (targetPosition.height / 2) - parent.clientHeight / 2;
+        x = offsetLeft + (targetPosition.width * leftScalar) - parent.clientWidth * leftScalar;
+        y = offsetTop + (targetPosition.height * topScalar) - parent.clientHeight * topScalar;
         x = Math.max(Math.min(x, parent.scrollWidth - parent.clientWidth), 0);
         y = Math.max(Math.min(y, parent.scrollHeight - parent.clientHeight), 0);
         differenceX = x - parent.scrollLeft;
@@ -52,12 +56,12 @@ function animate(parent){
             return;
         }
 
-        var location = getTargetScrollLocation(scrollSettings.target, parent),
+        var location = getTargetScrollLocation(scrollSettings.target, parent, scrollSettings.align),
             time = Date.now() - scrollSettings.startTime,
             timeValue = 1 / scrollSettings.time * time;
 
         if(
-            time > scrollSettings.time || 
+            time > scrollSettings.time ||
             (Math.abs(location.differenceY) <= 1 && Math.abs(location.differenceX) <= 1)
         ){
             parent._scrollSettings = null;
@@ -96,9 +100,10 @@ function transitionScrollTo(target, parent, settings, callback){
         target: target,
         time: settings.time,
         ease: settings.ease,
+        align: settings.align,
         end: end
     };
-    parent.addEventListener('touchstart', end);    
+    parent.addEventListener('touchstart', end);
 
     if(idle){
         animate(parent);

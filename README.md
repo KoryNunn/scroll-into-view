@@ -14,7 +14,7 @@ use it
 
     scrollIntoView(someElement);
 
-You can pass settings to control the time, easing, and whether or not a parent is a valid element to scroll:
+You can pass settings to control the time, easing, and whether or not a parent is a valid element to scroll, and alignment:
 
     scrollIntoView(someElement, {
         time: 500, // half a second
@@ -23,6 +23,10 @@ You can pass settings to control the time, easing, and whether or not a parent i
         },
         validTarget: function(target, parentsScrolled){
             return parentsScrolled < 2 && !target.matches('.dontScroll');
+        },
+        align:{
+            top: 0 to 1, default 0.5 (center)
+            left: 0 to 1, default 0.5 (center)
         }
     });
 
