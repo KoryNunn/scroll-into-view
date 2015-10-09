@@ -1,4 +1,6 @@
-var raf = require('raf');
+var raf = require('raf'),
+    COMPLETE = 'complete',
+    CANCELED = 'canceled';
 
 function setElementScroll(element, x, y){
     if(element === window){
@@ -65,7 +67,7 @@ function animate(parent){
         ){
             setElementScroll(parent, location.x, location.y);
             parent._scrollSettings = null;
-            return scrollSettings.end();
+            return scrollSettings.end(COMPLETE);
         }
 
         var valueX = timeValue,
@@ -84,12 +86,12 @@ function transitionScrollTo(target, parent, settings, callback){
     var idle = !parent._scrollSettings;
 
     if(parent._scrollSettings){
-        parent._scrollSettings.end();
+        parent._scrollSettings.end(CANCELED);
     }
 
-    function end(){
+    function end(endType){
         parent._scrollSettings = null;
-        callback();
+        callback(endType);
         parent.removeEventListener('touchstart', end);
     }
 
@@ -101,7 +103,7 @@ function transitionScrollTo(target, parent, settings, callback){
         align: settings.align,
         end: end
     };
-    parent.addEventListener('touchstart', end);
+    parent.addEventListener('touchstart', end.bind(null, CANCELED));
 
     if(idle){
         animate(parent);
@@ -128,10 +130,10 @@ module.exports = function(target, settings, callback){
     var parent = target.parentElement,
         parents = 0;
 
-    function done(){
+    function done(endType){
         parents--;
         if(!parents){
-            callback && callback();
+            callback && callback(endType);
         }
     }
 

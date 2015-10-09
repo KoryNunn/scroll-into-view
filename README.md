@@ -32,8 +32,9 @@ You can pass settings to control the time, easing, and whether or not a parent i
 
 You can pass a callback that will be called when all scrolling has been completed or canceled.
 
-    scrollIntoView(someElement [, settings], function(){
+    scrollIntoView(someElement [, settings], function(type){
         // Scrolling done.
+        // type will be 'complete' if the scroll completed or 'canceled' if the current scroll was canceled by a new scroll
     })
 
 ## Testing

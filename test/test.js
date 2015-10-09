@@ -35,7 +35,7 @@ function queue(fn){
 test('scrolls into view, 1 deep', function(t) {
     var target;
 
-    t.plan(1);
+    t.plan(2);
 
     queue(function(next){
 
@@ -45,11 +45,12 @@ test('scrolls into view, 1 deep', function(t) {
             )
         );
 
-        scrollIntoView(target, function(){
+        scrollIntoView(target, function(type){
             t.ok(
                 target.getBoundingClientRect().top < window.innerHeight,
                 'target was in view'
             );
+            t.equal(type, 'complete');
             next();
         });
     });
@@ -58,7 +59,7 @@ test('scrolls into view, 1 deep', function(t) {
 test('scrolls into view, 2 deep', function(t) {
     var target;
 
-    t.plan(1);
+    t.plan(2);
 
     queue(function(next){
 
@@ -78,12 +79,13 @@ test('scrolls into view, 2 deep', function(t) {
             )
         );
 
-        scrollIntoView(target, function(){
+        scrollIntoView(target, function(type){
             t.ok(
                 target.getBoundingClientRect().top < window.innerHeight &&
                 target.getBoundingClientRect().left < window.innerWidth,
                 'target was in view'
             );
+            t.equal(type, 'complete');
             next();
         });
     });
@@ -93,7 +95,7 @@ test('hijack', function(t) {
     var target1,
         target2;
 
-    t.plan(2);
+    t.plan(4);
 
     queue(function(next){
 
@@ -114,18 +116,20 @@ test('hijack', function(t) {
             )
         );
 
-        scrollIntoView(target1, function(){
+        scrollIntoView(target1, function(type){
+            t.equal(type, 'canceled');
             t.pass();
         });
 
         setTimeout(function(){
 
-            scrollIntoView(target2, function(){
+            scrollIntoView(target2, function(type){
                 t.ok(
                     target2.getBoundingClientRect().top < window.innerHeight &&
                     target2.getBoundingClientRect().left < window.innerWidth,
                     'target2 was in view'
                 );
+                t.equal(type, 'complete');
                 next();
             });
 
@@ -136,7 +140,7 @@ test('hijack', function(t) {
 test('invalid target', function(t) {
     var target;
 
-    t.plan(1);
+    t.plan(2);
 
     queue(function(next){
 
@@ -152,13 +156,14 @@ test('invalid target', function(t) {
         );
 
         scrollIntoView(
-            target, 
+            target,
             {
                 validTarget: function(target){
                     return target !== window;
                 }
             },
-            function(){
+            function(type){
+                t.equal(type, 'complete');
                 t.pass();
             }
         );
@@ -168,7 +173,7 @@ test('invalid target', function(t) {
 test('body height less than scroll height', function(t) {
     var target;
 
-    t.plan(1);
+    t.plan(2);
 
     queue(function(next){
 
@@ -185,12 +190,13 @@ test('body height less than scroll height', function(t) {
             )
         );
 
-        scrollIntoView(target, function(){
+        scrollIntoView(target, function(type){
             t.ok(
                 target.getBoundingClientRect().top < window.innerHeight &&
                 target.getBoundingClientRect().left < window.innerWidth,
                 'target was in view'
             );
+            t.equal(type, 'complete');
             next();
         });
     });
