@@ -12,7 +12,8 @@
   },
   "scripts": {
     "test": "browserify test/test.js -d -o test/test.browser.js && google-chrome ./test/test.html",
-    "watch": "watchify test/test.js -d -o test/test.browser.js"
+    "watchTest": "watchify test/test.js -d -o test/test.browser.js",
+    "watchExample": "watchify example/index.js -d -o example/index.browser.js"
   },
   "author": "",
   "license": "BSD",

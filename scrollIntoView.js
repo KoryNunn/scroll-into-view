@@ -83,10 +83,12 @@ function animate(parent){
 }
 
 function transitionScrollTo(target, parent, settings, callback){
-    var idle = !parent._scrollSettings;
+    var idle = !parent._scrollSettings,
+        lastSettings = parent._scrollSettings,
+        now = Date.now();
 
-    if(parent._scrollSettings){
-        parent._scrollSettings.end(CANCELED);
+    if(lastSettings){
+        lastSettings.end(CANCELED);
     }
 
     function end(endType){
@@ -96,9 +98,9 @@ function transitionScrollTo(target, parent, settings, callback){
     }
 
     parent._scrollSettings = {
-        startTime: Date.now(),
+        startTime: lastSettings ? lastSettings.startTime : Date.now(),
         target: target,
-        time: settings.time,
+        time: settings.time + (lastSettings ? now - lastSettings.startTime : 0),
         ease: settings.ease,
         align: settings.align,
         end: end
