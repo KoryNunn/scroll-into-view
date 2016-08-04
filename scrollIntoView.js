@@ -126,7 +126,7 @@ module.exports = function(target, settings, callback){
         settings = {};
     }
 
-    settings.time = settings.time || 1000;
+    settings.time = isNaN(settings.time) ? 1000 : settings.time;
     settings.ease = settings.ease || function(v){return v;};
 
     var parent = target.parentElement,
