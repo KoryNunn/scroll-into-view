@@ -141,13 +141,23 @@ module.exports = function(target, settings, callback){
 
     while(parent){
         if(
-            settings.validTarget ? settings.validTarget(parent, parents) : true &&
+            // If there is a validTarget function, check it.
+            (settings.validTarget ? settings.validTarget(parent, parents) : true) &&
+
+            // Else if window
             parent === window ||
+
+            // Else...
             (
-                parent.scrollHeight !== parent.clientHeight ||
-                parent.scrollWidth !== parent.clientWidth
-            ) &&
-            getComputedStyle(parent).overflow !== 'hidden'
+                /// check if scrollable
+                (
+                    parent.scrollHeight !== parent.clientHeight ||
+                    parent.scrollWidth !== parent.clientWidth
+                ) &&
+
+                // And not hidden.
+                getComputedStyle(parent).overflow !== 'hidden'
+            )
         ){
             parents++;
             transitionScrollTo(target, parent, settings, done);
