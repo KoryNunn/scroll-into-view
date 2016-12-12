@@ -28,7 +28,7 @@ You can pass settings to control the time, easing, and whether or not a parent i
 scrollIntoView(someElement, {
     time: 500, // half a second
     ease: function(value){
-        return Math.pow(value,2) - value); // Do something weird.
+        return Math.pow(value,2) - value; // Do something weird.
     },
     validTarget: function(target, parentsScrolled){
         return parentsScrolled < 2 && !target.matches('.dontScroll');

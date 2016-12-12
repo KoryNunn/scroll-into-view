@@ -20,13 +20,30 @@ window.addEventListener('load', function(){
     }
     align();
 
-    var button;
+    var button,
+        button2;
 
     crel(document.body,
         button = crel('button', {'style':'position:fixed; top: 10px; left: 10px'},
             'scroll into view'
+        ),
+        button2 = crel('button', {'style':'position:fixed; top: 100px; left: 10px'},
+            'scroll into view with custom easing'
         )
     );
 
+    function ease(){
+        target.textContent = 'scrolling';
+        scrollIntoView(target, {
+            time: 3000,
+            ease: function(value){
+                return 1-Math.acos(value) * 0.65;
+            }
+        }, function(type){
+            target.textContent = type;
+        });
+    }
+
     button.addEventListener('click', align);
+    button2.addEventListener('click', ease);
 });

@@ -70,12 +70,13 @@ function animate(parent){
             return scrollSettings.end(COMPLETE);
         }
 
-        var valueX = timeValue,
-            valueY = timeValue;
+        var easeValue = 1 - scrollSettings.ease(timeValue);
+
+        console.log(timeValue, easeValue);
 
         setElementScroll(parent,
-            location.x - location.differenceX * Math.pow(1 - valueX, valueX / 2),
-            location.y - location.differenceY * Math.pow(1 - valueY, valueY / 2)
+            location.x - location.differenceX * easeValue,
+            location.y - location.differenceY * easeValue
         );
 
         animate(parent);
@@ -127,7 +128,7 @@ module.exports = function(target, settings, callback){
     }
 
     settings.time = isNaN(settings.time) ? 1000 : settings.time;
-    settings.ease = settings.ease || function(v){return v;};
+    settings.ease = settings.ease || function(v){return 1 - Math.pow(1 - v, v / 2);};
 
     var parent = target.parentElement,
         parents = 0;
