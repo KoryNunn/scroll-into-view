@@ -8,7 +8,7 @@ Also scrolls any scroll-parents so that the element is in view.
 
 ## Example
 
-[Example](https://rawgit.com/KoryNunn/scroll-into-view/master/example/index.html)
+[Example](http://korynunn.github.io/scroll-into-view/example/)
 
 ## How
 
