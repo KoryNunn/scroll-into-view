@@ -35,9 +35,9 @@ window.addEventListener('load', function(){
     function ease(){
         target.textContent = 'scrolling';
         scrollIntoView(target, {
-            time: 3000,
+            time: 1000,
             ease: function(value){
-                return 1-Math.acos(value) * 0.65;
+                return 1 - Math.pow(1 - value, value / 10);
             }
         }, function(type){
             target.textContent = type;
