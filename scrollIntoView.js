@@ -72,8 +72,6 @@ function animate(parent){
 
         var easeValue = 1 - scrollSettings.ease(timeValue);
 
-        console.log(timeValue, easeValue);
-
         setElementScroll(parent,
             location.x - location.differenceX * easeValue,
             location.y - location.differenceY * easeValue
@@ -95,7 +93,7 @@ function transitionScrollTo(target, parent, settings, callback){
     function end(endType){
         parent._scrollSettings = null;
         callback(endType);
-        parent.removeEventListener('touchstart', end);
+        settings.cancelOnTouch === true && parent.removeEventListener('touchstart', end);
     }
 
     parent._scrollSettings = {
@@ -106,7 +104,8 @@ function transitionScrollTo(target, parent, settings, callback){
         align: settings.align,
         end: end
     };
-    parent.addEventListener('touchstart', end.bind(null, CANCELED));
+
+    settings.cancelOnTouch === true && parent.addEventListener('touchstart', end.bind(null, CANCELED));
 
     if(idle){
         animate(parent);
