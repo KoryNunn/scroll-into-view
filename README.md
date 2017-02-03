@@ -33,6 +33,7 @@ scrollIntoView(someElement, {
     validTarget: function(target, parentsScrolled){
         return parentsScrolled < 2 && !target.matches('.dontScroll');
     },
+    cancelOnTouch: true, // cancel animation on touch
     align:{
         top: 0 to 1, default 0.5 (center)
         left: 0 to 1, default 0.5 (center)
