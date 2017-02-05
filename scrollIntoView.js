@@ -82,11 +82,11 @@ function animate(parent){
         animate(parent);
     });
 }
-
 function transitionScrollTo(target, parent, settings, callback){
     var idle = !parent._scrollSettings,
         lastSettings = parent._scrollSettings,
-        now = Date.now();
+        now = Date.now(),
+        endHandler;
 
     if(lastSettings){
         lastSettings.end(CANCELED);
@@ -95,7 +95,7 @@ function transitionScrollTo(target, parent, settings, callback){
     function end(endType){
         parent._scrollSettings = null;
         callback(endType);
-        parent.removeEventListener('touchstart', end);
+        parent.removeEventListener('touchstart', endHandler);
     }
 
     parent._scrollSettings = {
@@ -106,7 +106,9 @@ function transitionScrollTo(target, parent, settings, callback){
         align: settings.align,
         end: end
     };
-    parent.addEventListener('touchstart', end.bind(null, CANCELED));
+
+    endHandler = end.bind(null, CANCELED);
+    parent.addEventListener('touchstart', endHandler);
 
     if(idle){
         animate(parent);
