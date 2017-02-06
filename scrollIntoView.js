@@ -72,8 +72,6 @@ function animate(parent){
 
         var easeValue = 1 - scrollSettings.ease(timeValue);
 
-        console.log(timeValue, easeValue);
-
         setElementScroll(parent,
             location.x - location.differenceX * easeValue,
             location.y - location.differenceY * easeValue
