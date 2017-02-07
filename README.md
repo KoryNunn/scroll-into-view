@@ -31,7 +31,8 @@ scrollIntoView(someElement, {
         return Math.pow(value,2) - value; // Do something weird.
     },
     validTarget: function(target, parentsScrolled){
-        return parentsScrolled < 2 && !target.matches('.dontScroll');
+        // Only scroll the first two elements that don't have the class "dontScroll"
+        return parentsScrolled < 2 && target !== window && !target.matches('.dontScroll');
     },
     align:{
         top: 0 to 1, default 0.5 (center)
