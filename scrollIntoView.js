@@ -24,12 +24,12 @@ function getTargetScrollLocation(target, parent, align){
         topScalar = topAlign;
 
     if(parent === window){
-        x = targetPosition.left + window.scrollX - window.innerWidth * leftScalar + Math.min(targetPosition.width, window.innerWidth) * leftScalar;
-        y = targetPosition.top + window.scrollY - window.innerHeight * topScalar + Math.min(targetPosition.height, window.innerHeight) * topScalar;
+        x = targetPosition.left + window.pageXOffset - window.innerWidth * leftScalar + Math.min(targetPosition.width, window.innerWidth) * leftScalar;
+        y = targetPosition.top + window.pageYOffset - window.innerHeight * topScalar + Math.min(targetPosition.height, window.innerHeight) * topScalar;
         x = Math.max(Math.min(x, document.body.scrollWidth - window.innerWidth * leftScalar), 0);
         y = Math.max(Math.min(y, document.body.scrollHeight- window.innerHeight * topScalar), 0);
-        differenceX = x - window.scrollX;
-        differenceY = y - window.scrollY;
+        differenceX = x - window.pageXOffset;
+        differenceY = y - window.pageYOffset;
     }else{
         parentPosition = parent.getBoundingClientRect();
         var offsetTop = targetPosition.top - (parentPosition.top - parent.scrollTop);
