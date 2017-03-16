@@ -2,7 +2,7 @@
 
 ## What
 
-Scroll's an element into view
+Scrolls an element into view
 
 Also scrolls any scroll-parents so that the element is in view.
 
