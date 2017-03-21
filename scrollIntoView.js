@@ -145,19 +145,21 @@ module.exports = function(target, settings, callback){
             // If there is a validTarget function, check it.
             (settings.validTarget ? settings.validTarget(parent, parents) : true) &&
 
-            // Else if window
-            parent === window ||
-
-            // Else...
             (
-                /// check if scrollable
-                (
-                    parent.scrollHeight !== parent.clientHeight ||
-                    parent.scrollWidth !== parent.clientWidth
-                ) &&
+                // Else if window
+                parent === window ||
 
-                // And not hidden.
-                getComputedStyle(parent).overflow !== 'hidden'
+                // Else...
+                (
+                    /// check if scrollable
+                    (
+                        parent.scrollHeight !== parent.clientHeight ||
+                        parent.scrollWidth !== parent.clientWidth
+                    ) &&
+
+                    // And not hidden.
+                    getComputedStyle(parent).overflow !== 'hidden'
+                )
             )
         ){
             parents++;
