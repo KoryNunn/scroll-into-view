@@ -113,6 +113,21 @@ function transitionScrollTo(target, parent, settings, callback){
     }
 }
 
+function isScrollable(element){
+    return (
+        parent === window ||
+        (
+            element.scrollHeight !== element.clientHeight ||
+            element.scrollWidth !== element.clientWidth
+        ) &&
+        getComputedStyle(element).overflow !== 'hidden'
+    );
+}
+
+function defaultValidTarget(){
+    return true;
+}
+
 module.exports = function(target, settings, callback){
     if(!target){
         return;
@@ -140,28 +155,10 @@ module.exports = function(target, settings, callback){
         }
     }
 
+    var validTarget = settings.validTarget || defaultValidTarget;
+
     while(parent){
-        if(
-            // If there is a validTarget function, check it.
-            (settings.validTarget ? settings.validTarget(parent, parents) : true) &&
-
-            (
-                // Else if window
-                parent === window ||
-
-                // Else...
-                (
-                    /// check if scrollable
-                    (
-                        parent.scrollHeight !== parent.clientHeight ||
-                        parent.scrollWidth !== parent.clientWidth
-                    ) &&
-
-                    // And not hidden.
-                    getComputedStyle(parent).overflow !== 'hidden'
-                )
-            )
-        ){
+        if(validTarget(parent, parents) && isScrollable(parent)){
             parents++;
             transitionScrollTo(target, parent, settings, done);
         }
