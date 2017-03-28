@@ -30,8 +30,8 @@ function getTargetScrollLocation(target, parent, align){
         y = targetPosition.top + window.pageYOffset - window.innerHeight * topScalar + Math.min(targetPosition.height, window.innerHeight) * topScalar;
         x = Math.max(Math.min(x, document.body.scrollWidth - window.innerWidth * leftScalar), 0);
         y = Math.max(Math.min(y, document.body.scrollHeight- window.innerHeight * topScalar), 0);
-        x += leftAlignOffset;
-        y += topAlignOffset;
+        x += leftAlignOffset * window.innerWidth;
+        y += topAlignOffset * window.innerHeight;
         differenceX = x - window.pageXOffset;
         differenceY = y - window.pageYOffset;
     }else{
@@ -42,8 +42,8 @@ function getTargetScrollLocation(target, parent, align){
         y = offsetTop + (targetPosition.height * topScalar) - parent.clientHeight * topScalar;
         x = Math.max(Math.min(x, parent.scrollWidth - parent.clientWidth), 0);
         y = Math.max(Math.min(y, parent.scrollHeight - parent.clientHeight), 0);
-        x += leftAlignOffset;
-        y += topAlignOffset;
+        x += leftAlignOffset * window.innerWidth;
+        y += topAlignOffset * window.innerHeight;
         differenceX = x - parent.scrollLeft;
         differenceY = y - parent.scrollTop;
     }
