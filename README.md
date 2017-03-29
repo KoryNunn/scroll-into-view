@@ -37,6 +37,8 @@ scrollIntoView(someElement, {
     align:{
         top: 0 to 1, default 0.5 (center)
         left: 0 to 1, default 0.5 (center)
+        topOffset: 0 to 1, default 0 (top) e.g. -(1/window.innerHeight*40) for a 40 pixel offset (appbar height) from the top
+        leftOffset: 0 to 1, default 0 (left)
     }
 });
 ```
