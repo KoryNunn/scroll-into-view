@@ -61,3 +61,15 @@ The tests will attempt to launch google-chrome. If you don't have chrome, lol ju
 ```
 npm run test
 ```
+
+# Standalone
+
+If you want to use this module without browserify, you can use `scrollIntoView.min.js`
+
+```
+<script src="scrollIntoView.min.js"></script>
+
+<script>
+    window.scrollIntoView(someElement);
+</script>
+```
