@@ -129,7 +129,7 @@ function transitionScrollTo(target, parent, settings, callback){
 
 function isScrollable(element){
     return (
-        parent === window ||
+        element === window ||
         (
             element.scrollHeight !== element.clientHeight ||
             element.scrollWidth !== element.clientWidth
