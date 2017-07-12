@@ -1,6 +1,6 @@
 {
   "name": "scroll-into-view",
-  "version": "1.8.1",
+  "version": "1.8.3",
   "description": "",
   "main": "scrollIntoView.js",
   "directories": {
@@ -11,17 +11,17 @@
     "url": "git@github.com:KoryNunn/scroll-into-view.git"
   },
   "scripts": {
-    "test": "browserify test/test.js -d -o test/test.browser.js && google-chrome ./test/test.html",
-    "watchTest": "watchify test/test.js -d -o test/test.browser.js",
-    "watchExample": "watchify example/index.js -d -o example/index.browser.js"
+    "test": "browserify ./test/test.js -d -o ./test/test.browser.js && google-chrome ./test/test.html",
+    "build": "browserify ./example/index.js > ./example/index.browser.js & browserify --bare -g uglifyify ./standalone.js > ./scrollIntoView.min.js",
+    "watchTest": "watchify ./test/test.js -d -o ./test/test.browser.js",
+    "watchExample": "watchify ./example/index.js -d -o ./example/index.browser.js"
   },
   "author": "",
   "license": "BSD",
   "devDependencies": {
+    "crel": "^1.1.1",
     "tape": "~2.1.0",
-    "crel": "^1.1.1"
+    "watchify": "^3.9.0"
   },
-  "dependencies": {
-    "raf": "^3.1.0"
-  }
+  "dependencies": {}
 }
