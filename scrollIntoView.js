@@ -1,6 +1,13 @@
-var raf = require('raf'),
-    COMPLETE = 'complete',
+var COMPLETE = 'complete',
     CANCELED = 'canceled';
+
+function raf(task){
+    if('requestAnimationFrame' in window){
+        return window.requestAnimationFrame(task);
+    }
+
+    setTimeout(task, 16);
+}
 
 function setElementScroll(element, x, y){
     if(element === window){
@@ -32,8 +39,6 @@ function getTargetScrollLocation(target, parent, align){
         targetHeight = Math.min(targetPosition.height, window.innerHeight);
         x = targetPosition.left + window.pageXOffset - window.innerWidth * leftScalar + targetWidth * leftScalar;
         y = targetPosition.top + window.pageYOffset - window.innerHeight * topScalar + targetHeight * topScalar;
-        x = Math.max(Math.min(x, document.body.scrollWidth - window.innerWidth * leftScalar), 0);
-        y = Math.max(Math.min(y, document.body.scrollHeight- window.innerHeight * topScalar), 0);
         x -= leftOffset;
         y -= topOffset;
         differenceX = x - window.pageXOffset;
