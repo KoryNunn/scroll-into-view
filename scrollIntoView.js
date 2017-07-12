@@ -147,6 +147,10 @@ function defaultValidTarget(){
     return true;
 }
 
+function defaultValidScrollable(){
+    return false;
+}
+
 module.exports = function(target, settings, callback){
     if(!target){
         return;
@@ -175,9 +179,10 @@ module.exports = function(target, settings, callback){
     }
 
     var validTarget = settings.validTarget || defaultValidTarget;
+    var validScrollable = settings.validScrollable || defaultValidScrollable;
 
     while(parent){
-        if(validTarget(parent, parents) && isScrollable(parent)){
+        if(validTarget(parent, parents) && (validScrollable(parent) || isScrollable(parent))){
             parents++;
             transitionScrollTo(target, parent, settings, done);
         }
