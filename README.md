@@ -52,6 +52,10 @@ scrollIntoView(someElement [, settings], function(type){
 });
 ```
 
+## Size
+
+Small. ~3.03 KB for the standalone.
+
 ## Testing
 
 Testing scrolling is really hard without stuff like webdriver, but what's there works ok for the moment.
