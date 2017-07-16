@@ -201,3 +201,50 @@ test('body height less than scroll height', function(t) {
         });
     });
 });
+
+test('hidden scrollbars in firefox', function(t) {
+    var target;
+
+    t.plan(3);
+
+    queue(function(next){
+
+        if (navigator.userAgent.toLowerCase().indexOf('firefox') == -1) {
+            console.warn('not firefox, skipped');
+            next();
+            return;
+        }
+
+        crel(document.body,
+            target = crel('div', {'style':'overflow: -moz-scrollbars-none;'})
+        );
+        t.ok(getComputedStyle(target).overflow == 'hidden', 'overflow reported as *hidden*')
+
+        crel(document.documentElement, {'style': 'height: 100%;'},
+            crel(document.body, {'style':'height: 100%;'},
+                crel('div', {'style':'position:relative; height:5000px; overflow: -moz-scrollbars-none;'},
+                    crel('div', {'style':'position:relative; font-size:20em; display:inline-block'},
+                        target = crel('span', {'style':'position:absolute; top:75%; left: 75%; box-shadow: 0 0 10px 10px red;'}),
+                        crel('div', {style: 'white-space:nowrap;'}, 'TEXT-AND-THAT-TO-MAKE-STUFF-HELA-WIDE'),
+                        crel('div', {style: 'white-space:nowrap;'}, 'TEXT-AND-THAT-TO-MAKE-STUFF-HELA-WIDE'),
+                        crel('div', {style: 'white-space:nowrap;'}, 'TEXT-AND-THAT-TO-MAKE-STUFF-HELA-WIDE')
+                    )
+                )
+            )
+        );
+
+        function validScrollable(elem) {
+            return elem.parentElement === document.body;
+        }
+
+        scrollIntoView(target, {validScrollable: validScrollable}, function(type){
+            t.ok(
+                target.getBoundingClientRect().top < window.innerHeight &&
+                target.getBoundingClientRect().left < window.innerWidth,
+                'target was in view'
+            );
+            t.equal(type, 'complete');
+            next();
+        });
+    });
+});
