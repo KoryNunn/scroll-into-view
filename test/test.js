@@ -205,15 +205,14 @@ test('body height less than scroll height', function(t) {
 test('hidden scrollbars in firefox', function(t) {
     var target;
 
+    if (navigator.userAgent.toLowerCase().indexOf('firefox') == -1) {
+        console.warn('not firefox, skipped');
+        return;
+    }
+
     t.plan(3);
 
     queue(function(next){
-
-        if (navigator.userAgent.toLowerCase().indexOf('firefox') == -1) {
-            console.warn('not firefox, skipped');
-            next();
-            return;
-        }
 
         crel(document.body,
             target = crel('div', {'style':'overflow: -moz-scrollbars-none;'})
