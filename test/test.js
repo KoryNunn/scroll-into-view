@@ -217,7 +217,7 @@ test('hidden scrollbars in firefox', function(t) {
         crel(document.body,
             target = crel('div', {'style':'overflow: -moz-scrollbars-none;'})
         );
-        t.ok(getComputedStyle(target).overflow == 'hidden', 'overflow reported as *hidden*')
+        t.ok(getComputedStyle(target).overflow === 'hidden', 'overflow reported as *hidden*')
 
         crel(document.documentElement, {'style': 'height: 100%;'},
             crel(document.body, {'style':'height: 100%;'},
@@ -232,11 +232,11 @@ test('hidden scrollbars in firefox', function(t) {
             )
         );
 
-        function validScrollable(elem) {
-            return elem.parentElement === document.body;
+        function isScrollable(element, defaultIsScrollable) {
+            return defaultIsScrollable(element) || element.parentElement === document.body;
         }
 
-        scrollIntoView(target, {validScrollable: validScrollable}, function(type){
+        scrollIntoView(target, {isScrollable: isScrollable}, function(type){
             t.ok(
                 target.getBoundingClientRect().top < window.innerHeight &&
                 target.getBoundingClientRect().left < window.innerWidth,

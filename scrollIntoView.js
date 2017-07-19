@@ -132,7 +132,7 @@ function transitionScrollTo(target, parent, settings, callback){
     }
 }
 
-function isScrollable(element){
+function defaultIsScrollable(element){
     return (
         element === window ||
         (
@@ -145,10 +145,6 @@ function isScrollable(element){
 
 function defaultValidTarget(){
     return true;
-}
-
-function defaultValidScrollable(){
-    return false;
 }
 
 module.exports = function(target, settings, callback){
@@ -179,10 +175,10 @@ module.exports = function(target, settings, callback){
     }
 
     var validTarget = settings.validTarget || defaultValidTarget;
-    var validScrollable = settings.validScrollable || defaultValidScrollable;
+    var isScrollable = settings.isScrollable;
 
     while(parent){
-        if(validTarget(parent, parents) && (validScrollable(parent) || isScrollable(parent))){
+        if(validTarget(parent, parents) && (isScrollable ? isScrollable(parent, defaultIsScrollable) : defaultIsScrollable(parent))){
             parents++;
             transitionScrollTo(target, parent, settings, done);
         }
