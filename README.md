@@ -1,4 +1,4 @@
-![scroll-into-view](scrollIntoView.png)
+![scroll-into-view](/scrollintoview.png)
 
 ## What
 
