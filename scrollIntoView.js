@@ -10,7 +10,7 @@ function raf(task){
 }
 
 function setElementScroll(element, x, y){
-    if(element === window){
+    if('pageXOffset' in element){
         element.scrollTo(x, y);
     }else{
         element.scrollLeft = x;
@@ -34,15 +34,15 @@ function getTargetScrollLocation(target, parent, align){
         leftScalar = leftAlign,
         topScalar = topAlign;
 
-    if(parent === window){
-        targetWidth = Math.min(targetPosition.width, window.innerWidth);
-        targetHeight = Math.min(targetPosition.height, window.innerHeight);
-        x = targetPosition.left + window.pageXOffset - window.innerWidth * leftScalar + targetWidth * leftScalar;
-        y = targetPosition.top + window.pageYOffset - window.innerHeight * topScalar + targetHeight * topScalar;
+    if('pageXOffset' in parent){
+        targetWidth = Math.min(targetPosition.width, parent.innerWidth);
+        targetHeight = Math.min(targetPosition.height, parent.innerHeight);
+        x = targetPosition.left + parent.pageXOffset - parent.innerWidth * leftScalar + targetWidth * leftScalar;
+        y = targetPosition.top + parent.pageYOffset - parent.innerHeight * topScalar + targetHeight * topScalar;
         x -= leftOffset;
         y -= topOffset;
-        differenceX = x - window.pageXOffset;
-        differenceY = y - window.pageYOffset;
+        differenceX = x - parent.pageXOffset;
+        differenceY = y - parent.pageYOffset;
     }else{
         targetWidth = targetPosition.width;
         targetHeight = targetPosition.height;
@@ -134,7 +134,7 @@ function transitionScrollTo(target, parent, settings, callback){
 
 function defaultIsScrollable(element){
     return (
-        element === window ||
+        'pageXOffset' in element ||
         (
             element.scrollHeight !== element.clientHeight ||
             element.scrollWidth !== element.clientWidth
@@ -190,7 +190,8 @@ module.exports = function(target, settings, callback){
         }
 
         if(parent.tagName === 'BODY'){
-            parent = window;
+            parent = parent.ownerDocument;
+            parent = parent.defaultView || parent.ownerWindow;
         }
     }
 };
