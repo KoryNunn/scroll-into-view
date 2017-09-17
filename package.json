@@ -1,6 +1,6 @@
 {
   "name": "scroll-into-view",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "description": "",
   "main": "scrollIntoView.js",
   "directories": {
@@ -14,7 +14,8 @@
     "test": "browserify ./test/test.js -d -o ./test/test.browser.js && google-chrome ./test/test.html",
     "build": "browserify ./example/index.js > ./example/index.browser.js & browserify --bare -g uglifyify ./standalone.js > ./scrollIntoView.min.js",
     "watchTest": "watchify ./test/test.js -d -o ./test/test.browser.js",
-    "watchExample": "watchify ./example/index.js -d -o ./example/index.browser.js"
+    "watchExample": "watchify ./example/index.js -d -o ./example/index.browser.js",
+    "prepublish": "npm run-script build"
   },
   "author": "",
   "license": "BSD",
