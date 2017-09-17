@@ -10,7 +10,7 @@ function raf(task){
 }
 
 function setElementScroll(element, x, y){
-    if('pageXOffset' in element){
+    if(element.self === element){
         element.scrollTo(x, y);
     }else{
         element.scrollLeft = x;
@@ -34,7 +34,7 @@ function getTargetScrollLocation(target, parent, align){
         leftScalar = leftAlign,
         topScalar = topAlign;
 
-    if('pageXOffset' in parent){
+    if(parent.self === parent){
         targetWidth = Math.min(targetPosition.width, parent.innerWidth);
         targetHeight = Math.min(targetPosition.height, parent.innerHeight);
         x = targetPosition.left + parent.pageXOffset - parent.innerWidth * leftScalar + targetWidth * leftScalar;
