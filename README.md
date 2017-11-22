@@ -39,6 +39,7 @@ scrollIntoView(someElement, {
     validTarget: function(target, parentsScrolled){
 
         // Only scroll the first two elements that don't have the class "dontScroll"
+        // Element.matches is not supported in IE11, consider using Element.prototype.msMatchesSelector if you need to support that browser
         
         return parentsScrolled < 2 && target !== window && !target.matches('.dontScroll');
     },

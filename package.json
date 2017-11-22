@@ -18,7 +18,7 @@
     "prepublish": "npm run-script build"
   },
   "author": "",
-  "license": "BSD",
+  "license": "MIT",
   "devDependencies": {
     "browserify": "^14.4.0",
     "crel": "^1.1.1",
