@@ -8,7 +8,7 @@ Also scrolls any scroll-parents so that the element is in view.
 
 ## Donating
 
-If you want to show your support financially, [I'm on Patreon](patreon.com/user/korynunn)
+If you want to show your support financially, [I'm on Patreon](https://patreon.com/user/korynunn)
 
 ## Example
 
