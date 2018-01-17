@@ -6,6 +6,10 @@ Scrolls an element into view
 
 Also scrolls any scroll-parents so that the element is in view.
 
+## Donating
+
+If you want to show your support financially, [I'm on Patreon](patreon.com/user/korynunn)
+
 ## Example
 
 [Example](http://korynunn.github.io/scroll-into-view/example/)
