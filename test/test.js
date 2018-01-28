@@ -207,6 +207,7 @@ test('hidden scrollbars in firefox', function(t) {
 
     if (navigator.userAgent.toLowerCase().indexOf('firefox') == -1) {
         console.warn('not firefox, skipped');
+        t.end();
         return;
     }
 
@@ -245,5 +246,63 @@ test('hidden scrollbars in firefox', function(t) {
             t.equal(type, 'complete');
             next();
         });
+    });
+});
+
+test('instant scroll', function(t) {
+    var target;
+
+    t.plan(1);
+
+    queue(function(next){
+
+        crel(document.body,
+            crel('div', {'style':'height:5000px;'},
+                target = crel('span', {'style':'position:absolute; top:2500px;'})
+            )
+        );
+
+        scrollIntoView(target, { time: 0 });
+
+        t.ok(
+            target.getBoundingClientRect().top < window.innerHeight,
+            'target was in view'
+        );
+        next();
+    });
+});
+
+// Currently expected to fail. Willfix.
+test('instant scroll large depth', function(t) {
+    var target;
+
+    t.plan(1);
+
+    queue(function(next){
+
+        crel(document.body,
+            crel('div', {'style':'position:relative; height:5000px; overflow: scroll;'},
+                crel('div', {'style':'position:relative; font-size:20em; overflow: scroll;display:inline-block'},
+                    'TEXT-AND-THAT-TO-MAKE-STUFF-HELA-WIDE',
+                    'TEXT-AND-THAT-TO-MAKE-STUFF-HELA-WIDE',
+                    'TEXT-AND-THAT-TO-MAKE-STUFF-HELA-WIDE',
+                    'TEXT-AND-THAT-TO-MAKE-STUFF-HELA-WIDE',
+                    'TEXT-AND-THAT-TO-MAKE-STUFF-HELA-WIDE',
+                    'TEXT-AND-THAT-TO-MAKE-STUFF-HELA-WIDE',
+                    'TEXT-AND-THAT-TO-MAKE-STUFF-HELA-WIDE',
+                    'TEXT-AND-THAT-TO-MAKE-STUFF-HELA-WIDE',
+                    target = crel('span', {'style':'position:absolute; top:50%; left: 50%;'})
+                )
+            )
+        );
+
+        scrollIntoView(target, { time: 0 });
+
+        t.ok(
+            target.getBoundingClientRect().top < window.innerHeight &&
+            target.getBoundingClientRect().left < window.innerWidth,
+            'target was in view'
+        );
+        next();
     });
 });

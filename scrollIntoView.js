@@ -68,33 +68,31 @@ function getTargetScrollLocation(target, parent, align){
 }
 
 function animate(parent){
-    raf(function(){
-        var scrollSettings = parent._scrollSettings;
-        if(!scrollSettings){
-            return;
-        }
+    var scrollSettings = parent._scrollSettings;
+    if(!scrollSettings){
+        return;
+    }
 
-        var location = getTargetScrollLocation(scrollSettings.target, parent, scrollSettings.align),
-            time = Date.now() - scrollSettings.startTime,
-            timeValue = Math.min(1 / scrollSettings.time * time, 1);
+    var location = getTargetScrollLocation(scrollSettings.target, parent, scrollSettings.align),
+        time = Date.now() - scrollSettings.startTime,
+        timeValue = Math.min(1 / scrollSettings.time * time, 1);
 
-        if(
-            time > scrollSettings.time + 20
-        ){
-            setElementScroll(parent, location.x, location.y);
-            parent._scrollSettings = null;
-            return scrollSettings.end(COMPLETE);
-        }
+    if(
+        time > scrollSettings.time * 1.01
+    ){
+        setElementScroll(parent, location.x, location.y);
+        parent._scrollSettings = null;
+        return scrollSettings.end(COMPLETE);
+    }
 
-        var easeValue = 1 - scrollSettings.ease(timeValue);
+    var easeValue = 1 - scrollSettings.ease(timeValue);
 
-        setElementScroll(parent,
-            location.x - location.differenceX * easeValue,
-            location.y - location.differenceY * easeValue
-        );
+    setElementScroll(parent,
+        location.x - location.differenceX * easeValue,
+        location.y - location.differenceY * easeValue
+    );
 
-        animate(parent);
-    });
+    raf(animate.bind(null, parent));
 }
 function transitionScrollTo(target, parent, settings, callback){
     var idle = !parent._scrollSettings,
