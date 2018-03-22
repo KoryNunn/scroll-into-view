@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(){function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s}return e})()({1:[function(require,module,exports){
 var crel = require('crel'),
     scrollIntoView = require('../');
 
@@ -282,33 +282,31 @@ function getTargetScrollLocation(target, parent, align){
 }
 
 function animate(parent){
-    raf(function(){
-        var scrollSettings = parent._scrollSettings;
-        if(!scrollSettings){
-            return;
-        }
+    var scrollSettings = parent._scrollSettings;
+    if(!scrollSettings){
+        return;
+    }
 
-        var location = getTargetScrollLocation(scrollSettings.target, parent, scrollSettings.align),
-            time = Date.now() - scrollSettings.startTime,
-            timeValue = Math.min(1 / scrollSettings.time * time, 1);
+    var location = getTargetScrollLocation(scrollSettings.target, parent, scrollSettings.align),
+        time = Date.now() - scrollSettings.startTime,
+        timeValue = Math.min(1 / scrollSettings.time * time, 1);
 
-        if(
-            time > scrollSettings.time + 20
-        ){
-            setElementScroll(parent, location.x, location.y);
-            parent._scrollSettings = null;
-            return scrollSettings.end(COMPLETE);
-        }
+    if(
+        time > scrollSettings.time * 1.01
+    ){
+        setElementScroll(parent, location.x, location.y);
+        parent._scrollSettings = null;
+        return scrollSettings.end(COMPLETE);
+    }
 
-        var easeValue = 1 - scrollSettings.ease(timeValue);
+    var easeValue = 1 - scrollSettings.ease(timeValue);
 
-        setElementScroll(parent,
-            location.x - location.differenceX * easeValue,
-            location.y - location.differenceY * easeValue
-        );
+    setElementScroll(parent,
+        location.x - location.differenceX * easeValue,
+        location.y - location.differenceY * easeValue
+    );
 
-        animate(parent);
-    });
+    raf(animate.bind(null, parent));
 }
 function transitionScrollTo(target, parent, settings, callback){
     var idle = !parent._scrollSettings,
@@ -326,7 +324,7 @@ function transitionScrollTo(target, parent, settings, callback){
             parent.parentElement._scrollSettings.end(endType);
         }
         callback(endType);
-        parent.removeEventListener('touchstart', endHandler);
+        parent.removeEventListener('touchstart', endHandler, { passive: true });
     }
 
     parent._scrollSettings = {
@@ -339,7 +337,7 @@ function transitionScrollTo(target, parent, settings, callback){
     };
 
     endHandler = end.bind(null, CANCELED);
-    parent.addEventListener('touchstart', endHandler);
+    parent.addEventListener('touchstart', endHandler, { passive: true });
 
     if(idle){
         animate(parent);

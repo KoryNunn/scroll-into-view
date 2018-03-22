@@ -110,7 +110,7 @@ function transitionScrollTo(target, parent, settings, callback){
             parent.parentElement._scrollSettings.end(endType);
         }
         callback(endType);
-        parent.removeEventListener('touchstart', endHandler);
+        parent.removeEventListener('touchstart', endHandler, { passive: true });
     }
 
     parent._scrollSettings = {
@@ -123,7 +123,7 @@ function transitionScrollTo(target, parent, settings, callback){
     };
 
     endHandler = end.bind(null, CANCELED);
-    parent.addEventListener('touchstart', endHandler);
+    parent.addEventListener('touchstart', endHandler, { passive: true });
 
     if(idle){
         animate(parent);
