@@ -78,12 +78,15 @@ function animate(parent){
         timeValue = Math.min(1 / scrollSettings.time * time, 1);
 
     if(
-        time > scrollSettings.time * 1.01
+        time > scrollSettings.time &&
+        scrollSettings.endIterations > 3
     ){
         setElementScroll(parent, location.x, location.y);
         parent._scrollSettings = null;
         return scrollSettings.end(COMPLETE);
     }
+
+    scrollSettings.endIterations++;
 
     var easeValue = 1 - scrollSettings.ease(timeValue);
 
@@ -91,6 +94,12 @@ function animate(parent){
         location.x - location.differenceX * easeValue,
         location.y - location.differenceY * easeValue
     );
+
+    // At the end of animation, loop synchronously
+    // to try and hit the taget location.
+    if(time >= scrollSettings.time){
+        return animate(parent);
+    }
 
     raf(animate.bind(null, parent));
 }
@@ -115,6 +124,7 @@ function transitionScrollTo(target, parent, settings, callback){
 
     parent._scrollSettings = {
         startTime: lastSettings ? lastSettings.startTime : Date.now(),
+        endIterations: 0,
         target: target,
         time: settings.time + (lastSettings ? now - lastSettings.startTime : 0),
         ease: settings.ease,
