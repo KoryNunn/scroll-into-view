@@ -15,7 +15,8 @@
     "build": "browserify ./example/index.js > ./example/index.browser.js & browserify --bare -g uglifyify ./standalone.js > ./scrollIntoView.min.js",
     "watchTest": "watchify ./test/test.js -d -o ./test/test.browser.js",
     "watchExample": "watchify ./example/index.js -d -o ./example/index.browser.js",
-    "prepublish": "npm run-script build"
+    "prepublish": "npm run-script build",
+    "postinstall": "opencollective-postinstall"
   },
   "author": "",
   "license": "MIT",
@@ -26,5 +27,12 @@
     "uglifyify": "^4.0.2",
     "watchify": "^3.9.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "opencollective-postinstall": "^2.0.1",
+    "opencollective": "^1.0.3"
+  },
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/scroll-into-view"
+  }
 }
