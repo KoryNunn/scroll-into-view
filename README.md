@@ -1,5 +1,7 @@
 ![scroll-into-view](/scrollintoview.png)
 
+[![Backers on Open Collective](https://opencollective.com/scroll-into-view/backers/badge.svg)](#backers)
+[![Sponsors on Open Collective](https://opencollective.com/scroll-into-view/sponsors/badge.svg)](#sponsors) 
 ## What
 
 Scrolls an element into view
@@ -100,3 +102,33 @@ If you want to use this module without browserify, you can use `scrollIntoView.m
     window.scrollIntoView(someElement);
 </script>
 ```
+
+## Contributors
+
+This project exists thanks to all the people who contribute. 
+<a href="https://github.com/KoryNunn/scroll-into-view/graphs/contributors"><img src="https://opencollective.com/scroll-into-view/contributors.svg?width=890&button=false" /></a>
+
+
+## Backers
+
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/scroll-into-view#backer)]
+
+<a href="https://opencollective.com/scroll-into-view#backers" target="_blank"><img src="https://opencollective.com/scroll-into-view/backers.svg?width=890"></a>
+
+
+## Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/scroll-into-view#sponsor)]
+
+<a href="https://opencollective.com/scroll-into-view/sponsor/0/website" target="_blank"><img src="https://opencollective.com/scroll-into-view/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/scroll-into-view/sponsor/1/website" target="_blank"><img src="https://opencollective.com/scroll-into-view/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/scroll-into-view/sponsor/2/website" target="_blank"><img src="https://opencollective.com/scroll-into-view/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/scroll-into-view/sponsor/3/website" target="_blank"><img src="https://opencollective.com/scroll-into-view/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/scroll-into-view/sponsor/4/website" target="_blank"><img src="https://opencollective.com/scroll-into-view/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/scroll-into-view/sponsor/5/website" target="_blank"><img src="https://opencollective.com/scroll-into-view/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/scroll-into-view/sponsor/6/website" target="_blank"><img src="https://opencollective.com/scroll-into-view/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/scroll-into-view/sponsor/7/website" target="_blank"><img src="https://opencollective.com/scroll-into-view/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/scroll-into-view/sponsor/8/website" target="_blank"><img src="https://opencollective.com/scroll-into-view/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/scroll-into-view/sponsor/9/website" target="_blank"><img src="https://opencollective.com/scroll-into-view/sponsor/9/avatar.svg"></a>
+
+
