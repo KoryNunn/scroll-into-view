@@ -120,6 +120,7 @@ function transitionScrollTo(target, parent, settings, callback){
         }
         callback(endType);
         parent.removeEventListener('touchstart', endHandler, { passive: true });
+        parent.removeEventListener('wheel', endHandler, { passive: true });
     }
 
     parent._scrollSettings = {
@@ -134,6 +135,7 @@ function transitionScrollTo(target, parent, settings, callback){
 
     endHandler = end.bind(null, CANCELED);
     parent.addEventListener('touchstart', endHandler, { passive: true });
+    parent.addEventListener('wheel', endHandler, { passive: true });
 
     if(idle){
         animate(parent);
