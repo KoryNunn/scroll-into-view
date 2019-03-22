@@ -1,4 +1,9 @@
 
+## 1.9.5 - Fri Mar 22 2019
+
+Add changelog on precommit - 26489fc22c58988240567213e010803a107e3666
+
+
 ## 1.9.4 - Thu Mar 14 2019
 
 Added backers and sponsors on the README - 8bb98847f59b3c37ed479adbab7cac2c6800e56f
