@@ -15,21 +15,27 @@
     "build": "browserify ./example/index.js > ./example/index.browser.js & browserify --bare -g uglifyify ./standalone.js > ./scrollIntoView.min.js",
     "watchTest": "watchify ./test/test.js -d -o ./test/test.browser.js",
     "watchExample": "watchify ./example/index.js -d -o ./example/index.browser.js",
+    "updateChangelog": "git log | chlogit > CHANGELOG.md && git add CHANGELOG.md",
     "prepublish": "npm run-script build",
     "postinstall": "opencollective-postinstall"
   },
+  "pre-commit": [
+    "updateChangelog"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
     "browserify": "^14.4.0",
+    "chlogit": "^1.0.0",
     "crel": "^1.1.1",
+    "pre-commit": "^1.2.2",
     "tape": "~2.1.0",
     "uglifyify": "^4.0.2",
     "watchify": "^3.9.0"
   },
   "dependencies": {
-    "opencollective-postinstall": "^2.0.1",
-    "opencollective": "^1.0.3"
+    "opencollective": "^1.0.3",
+    "opencollective-postinstall": "^2.0.1"
   },
   "collective": {
     "type": "opencollective",
