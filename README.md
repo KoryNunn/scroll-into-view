@@ -1,4 +1,4 @@
-![scroll-into-view](/scrollintoview.png)
+![scroll-into-view](/scrollintoview.png) ![example-gif](/scrollIntoViewExample.gif)
 
 [![Backers on Open Collective](https://opencollective.com/scroll-into-view/backers/badge.svg)](#backers)
 [![Sponsors on Open Collective](https://opencollective.com/scroll-into-view/sponsors/badge.svg)](#sponsors) 
