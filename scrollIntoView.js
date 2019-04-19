@@ -196,7 +196,10 @@ module.exports = function(target, settings, callback){
         parent = parent.parentElement;
 
         if(!parent){
-            return;
+            if(!parents){
+                callback && callback(COMPLETE)
+            }
+            break;
         }
 
         if(parent.tagName === 'BODY'){
