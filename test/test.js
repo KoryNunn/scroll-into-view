@@ -306,3 +306,23 @@ test('instant scroll large depth', function(t) {
         next();
     });
 });
+
+test('calls callback on no scroll', function(t) {
+    var target;
+
+    t.plan(1);
+
+    queue(function(next){
+
+        crel(document.body,
+            crel('div', {'style':'height:5000px;'},
+                target = crel('span', {'style':'position:absolute; top:2500px;'})
+            )
+        );
+
+        scrollIntoView(target, { isScrollable: () => false }, function(type){
+            t.pass()
+            next();
+        });
+    });
+});
