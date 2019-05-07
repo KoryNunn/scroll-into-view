@@ -16,8 +16,7 @@
     "watchTest": "watchify ./test/test.js -d -o ./test/test.browser.js",
     "watchExample": "watchify ./example/index.js -d -o ./example/index.browser.js",
     "updateChangelog": "git log | chlogit > CHANGELOG.md && git add CHANGELOG.md",
-    "prepublish": "npm run-script build",
-    "postinstall": "opencollective-postinstall"
+    "prepublish": "npm run-script build"
   },
   "pre-commit": [
     "updateChangelog"
@@ -34,8 +33,6 @@
     "watchify": "^3.9.0"
   },
   "dependencies": {
-    "opencollective": "^1.0.3",
-    "opencollective-postinstall": "^2.0.1"
   },
   "collective": {
     "type": "opencollective",
