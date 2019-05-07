@@ -1,6 +1,6 @@
 {
   "name": "scroll-into-view",
-  "version": "1.9.6",
+  "version": "1.9.7",
   "description": "",
   "main": "scrollIntoView.js",
   "directories": {
@@ -32,8 +32,7 @@
     "uglifyify": "^4.0.2",
     "watchify": "^3.9.0"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "collective": {
     "type": "opencollective",
     "url": "https://opencollective.com/scroll-into-view"
