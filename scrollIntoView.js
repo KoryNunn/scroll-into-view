@@ -18,8 +18,10 @@ function setElementScroll(element, x, y){
     }
 }
 
-function getTargetScrollLocation(target, parent, align){
-    var targetPosition = target.getBoundingClientRect(),
+function getTargetScrollLocation(scrollSettings, parent){
+    var align = scrollSettings.align,
+        target = scrollSettings.target,
+        targetPosition = target.getBoundingClientRect(),
         parentPosition,
         x,
         y,
@@ -34,7 +36,7 @@ function getTargetScrollLocation(target, parent, align){
         leftScalar = leftAlign,
         topScalar = topAlign;
 
-    if(parent.self === parent){
+    if(scrollSettings.isWindow(parent)){
         targetWidth = Math.min(targetPosition.width, parent.innerWidth);
         targetHeight = Math.min(targetPosition.height, parent.innerHeight);
         x = targetPosition.left + parent.pageXOffset - parent.innerWidth * leftScalar + targetWidth * leftScalar;
@@ -73,7 +75,7 @@ function animate(parent){
         return;
     }
 
-    var location = getTargetScrollLocation(scrollSettings.target, parent, scrollSettings.align),
+    var location = getTargetScrollLocation(scrollSettings, parent),
         time = Date.now() - scrollSettings.startTime,
         timeValue = Math.min(1 / scrollSettings.time * time, 1);
 
@@ -103,6 +105,11 @@ function animate(parent){
 
     raf(animate.bind(null, parent));
 }
+
+function defaultIsWindow(target){
+    return target.self === target
+}
+
 function transitionScrollTo(target, parent, settings, callback){
     var idle = !parent._scrollSettings,
         lastSettings = parent._scrollSettings,
@@ -130,6 +137,7 @@ function transitionScrollTo(target, parent, settings, callback){
         time: settings.time + (lastSettings ? now - lastSettings.startTime : 0),
         ease: settings.ease,
         align: settings.align,
+        isWindow: settings.isWindow || defaultIsWindow,
         end: end
     };
 

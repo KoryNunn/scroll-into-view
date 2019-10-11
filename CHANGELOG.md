@@ -1,4 +1,9 @@
 
+## 1.9.7 - Tue May 7 2019
+
+Removed opencollective postinstall - [8b63c9ad](korynunn@8b63c9adb6de93dde7157ef0bd7e2f205873fb43)
+
+
 ## 1.9.6 - Fri Apr 19 2019
 
 Add files via upload - [650af702](Kory Nunn@650af7020db3a72198f2fc5c4efa823ab701a337)

@@ -326,3 +326,33 @@ test('calls callback on no scroll', function(t) {
         });
     });
 });
+
+test('custom isWindow', function(t) {
+    var target;
+
+    t.plan(2);
+
+    queue(function(next){
+
+        window.totallyWindow = true;
+
+        crel(document.body,
+            crel('div', {'style':'height:5000px;'},
+                target = crel('span', {'style':'position:absolute; top:2500px;'})
+            )
+        );
+
+        scrollIntoView(target, {
+            isWindow: function(target){
+                return target.totallyWindow;
+            }
+        }, function(type){
+            t.ok(
+                target.getBoundingClientRect().top < window.innerHeight,
+                'target was in view'
+            );
+            t.equal(type, 'complete');
+            next();
+        });
+    });
+});
