@@ -114,7 +114,8 @@ function transitionScrollTo(target, parent, settings, callback){
     var idle = !parent._scrollSettings,
         lastSettings = parent._scrollSettings,
         now = Date.now(),
-        endHandler;
+        cancelHandler,
+        passiveOptions = { passive: true };
 
     if(lastSettings){
         lastSettings.end(CANCELED);
@@ -126,8 +127,10 @@ function transitionScrollTo(target, parent, settings, callback){
             parent.parentElement._scrollSettings.end(endType);
         }
         callback(endType);
-        parent.removeEventListener('touchstart', endHandler, { passive: true });
-        parent.removeEventListener('wheel', endHandler, { passive: true });
+        if(cancelHandler){
+            parent.removeEventListener('touchstart', cancelHandler, passiveOptions);
+            parent.removeEventListener('wheel', cancelHandler, passiveOptions);
+        }
     }
 
     parent._scrollSettings = {
@@ -141,9 +144,11 @@ function transitionScrollTo(target, parent, settings, callback){
         end: end
     };
 
-    endHandler = end.bind(null, CANCELED);
-    parent.addEventListener('touchstart', endHandler, { passive: true });
-    parent.addEventListener('wheel', endHandler, { passive: true });
+    if(!('cancellable' in settings) || settings.cancellable){
+        cancelHandler = end.bind(null, CANCELED);
+        parent.addEventListener('touchstart', cancelHandler, passiveOptions);
+        parent.addEventListener('wheel', cancelHandler, passiveOptions);
+    }
 
     if(idle){
         animate(parent);

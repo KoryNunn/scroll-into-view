@@ -23,6 +23,13 @@ window.addEventListener('load', function(){
     }
     align();
 
+    function uncancellableAlign(){
+        target.textContent = 'scrolling';
+        scrollIntoView(target, { time: 2000, cancellable: false }, function(type){
+            target.textContent = type;
+        });
+    }
+
     function ease(){
         target.textContent = 'scrolling';
         scrollIntoView(target, {
@@ -57,27 +64,33 @@ window.addEventListener('load', function(){
             target.textContent = type;
         });
         side = (side + 1) % 2;
-        button3.textContent = buttonText();
+        menuAlignButton.textContent = buttonText();
     }
 
-    var button,
-        button2;
+    var alignButton,
+        uncancellableAlignButton,
+        easeButton,
+        menuAlignButton;
 
     crel(menu,
-        button = crel('button', {'style':'width: 190px'},
+        alignButton = crel('button', {'style':'width: 190px'},
             'scroll into view'
         ),
-        button2 = crel('button', {'style':'width: 190px'},
+        uncancellableAlignButton = crel('button', {'style':'width: 190px'},
+            'uncancellable scroll into view'
+        ),
+        easeButton = crel('button', {'style':'width: 190px'},
             'scroll into view with custom easing'
         ),
-        button3 = crel('button', {'style':'width: 190px'},
+        menuAlignButton = crel('button', {'style':'width: 190px'},
             buttonText()
         )
     );
 
-    button.addEventListener('click', align);
-    button2.addEventListener('click', ease);
-    button3.addEventListener('click', menuAlign);
+    alignButton.addEventListener('click', align);
+    uncancellableAlignButton.addEventListener('click', uncancellableAlign);
+    easeButton.addEventListener('click', ease);
+    menuAlignButton.addEventListener('click', menuAlign);
 });
 },{"../":3,"crel":2}],2:[function(require,module,exports){
 //Copyright (C) 2012 Kory Nunn
@@ -328,7 +341,8 @@ function transitionScrollTo(target, parent, settings, callback){
     var idle = !parent._scrollSettings,
         lastSettings = parent._scrollSettings,
         now = Date.now(),
-        endHandler;
+        cancelHandler,
+        passiveOptions = { passive: true };
 
     if(lastSettings){
         lastSettings.end(CANCELED);
@@ -340,8 +354,10 @@ function transitionScrollTo(target, parent, settings, callback){
             parent.parentElement._scrollSettings.end(endType);
         }
         callback(endType);
-        parent.removeEventListener('touchstart', endHandler, { passive: true });
-        parent.removeEventListener('wheel', endHandler, { passive: true });
+        if(cancelHandler){
+            parent.removeEventListener('touchstart', cancelHandler, passiveOptions);
+            parent.removeEventListener('wheel', cancelHandler, passiveOptions);
+        }
     }
 
     parent._scrollSettings = {
@@ -355,9 +371,11 @@ function transitionScrollTo(target, parent, settings, callback){
         end: end
     };
 
-    endHandler = end.bind(null, CANCELED);
-    parent.addEventListener('touchstart', endHandler, { passive: true });
-    parent.addEventListener('wheel', endHandler, { passive: true });
+    if(!('cancellable' in settings) || settings.cancellable){
+        cancelHandler = end.bind(null, CANCELED);
+        parent.addEventListener('touchstart', cancelHandler, passiveOptions);
+        parent.addEventListener('wheel', cancelHandler, passiveOptions);
+    }
 
     if(idle){
         animate(parent);

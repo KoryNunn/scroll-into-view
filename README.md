@@ -68,7 +68,9 @@ scrollIntoView(someElement, {
     isWindow: function(target){
         // If you need special detection of the window object for some reason, you can do it here.
         return target.self === target;
-    }
+    },
+
+    cancellable: true // default is true, set to false to prevent users from cancelling the scroll with a touch or mousewheel
 
 });
 ```
