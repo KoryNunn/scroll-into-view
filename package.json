@@ -25,7 +25,7 @@
   "license": "MIT",
   "devDependencies": {
     "browserify": "^14.4.0",
-    "chlogit": "^1.0.0",
+    "chlogit": "^1.0.2",
     "crel": "^1.1.1",
     "pre-commit": "^1.2.2",
     "tape": "~2.1.0",
@@ -40,5 +40,12 @@
   "collective": {
     "type": "opencollective",
     "url": "https://opencollective.com/scroll-into-view"
-  }
+  },
+  "keywords": [
+    "scroll into view",
+    "scrollIntoView",
+    "scroll into view if needed",
+    "smooth scroll",
+    "scroll parents"
+  ]
 }

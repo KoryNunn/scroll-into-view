@@ -1,4 +1,24 @@
 
+## 1.12.1 - Thu Oct 24 2019
+
+Update package description - [ca09d990](korynunn@ca09d990047bdb796ba7dc4629da715f3b215ed1)
+
+
+## 1.12.0 - Thu Oct 24 2019
+
+Fixed potential overflow bug, added maxSynchronousAlignments, cleaned package - [566a2480](korynunn@566a2480d7f707bea06c0cf92052b5e2cb3243f6)
+
+
+## 1.11.0 - Fri Oct 11 2019
+
+Add cancellable option - [13ed1cb7](korynunn@13ed1cb79436908f68ba566be9c2ecc8f2e5f3e3)
+
+
+## 1.10.0 - Fri Oct 11 2019
+
+Added isWindow option - [932a23a0](korynunn@932a23a0f0a4e5f8fcb6c74c9c4ff5ad726e765b)
+
+
 ## 1.9.7 - Tue May 7 2019
 
 Removed opencollective postinstall - [8b63c9ad](korynunn@8b63c9adb6de93dde7157ef0bd7e2f205873fb43)
