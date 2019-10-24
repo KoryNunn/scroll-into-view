@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/KoryNunn/scroll-into-view.svg?branch=master)](https://travis-ci.org/KoryNunn/scroll-into-view)
 ![scroll-into-view](/scrollintoview.png) ![example-gif](/scrollIntoViewExample.gif)
 
 [![Backers on Open Collective](https://opencollective.com/scroll-into-view/backers/badge.svg)](#backers)
