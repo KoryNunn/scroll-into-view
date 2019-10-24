@@ -70,7 +70,9 @@ scrollIntoView(someElement, {
         return target.self === target;
     },
 
-    cancellable: true // default is true, set to false to prevent users from cancelling the scroll with a touch or mousewheel
+    cancellable: true, // default is true, set to false to prevent users from cancelling the scroll with a touch or mousewheel
+
+    maxSynchronousAlignments: 3 // default is 3. Maximum number of times to try and align elements synchronously before completing.
 
 });
 ```

@@ -298,24 +298,22 @@ function getTargetScrollLocation(scrollSettings, parent){
 
 function animate(parent){
     var scrollSettings = parent._scrollSettings;
+
     if(!scrollSettings){
         return;
     }
+
+    var maxSynchronousAlignments = scrollSettings.maxSynchronousAlignments;
 
     var location = getTargetScrollLocation(scrollSettings, parent),
         time = Date.now() - scrollSettings.startTime,
         timeValue = Math.min(1 / scrollSettings.time * time, 1);
 
-    if(
-        time > scrollSettings.time &&
-        scrollSettings.endIterations > 3
-    ){
+    if(scrollSettings.endIterations >= maxSynchronousAlignments){
         setElementScroll(parent, location.x, location.y);
         parent._scrollSettings = null;
         return scrollSettings.end(COMPLETE);
     }
-
-    scrollSettings.endIterations++;
 
     var easeValue = 1 - scrollSettings.ease(timeValue);
 
@@ -324,9 +322,8 @@ function animate(parent){
         location.y - location.differenceY * easeValue
     );
 
-    // At the end of animation, loop synchronously
-    // to try and hit the taget location.
     if(time >= scrollSettings.time){
+        scrollSettings.endIterations++;
         return animate(parent);
     }
 
@@ -360,6 +357,12 @@ function transitionScrollTo(target, parent, settings, callback){
         }
     }
 
+    var maxSynchronousAlignments = settings.maxSynchronousAlignments;
+
+    if(maxSynchronousAlignments == null){
+        maxSynchronousAlignments = 3;
+    }
+
     parent._scrollSettings = {
         startTime: lastSettings ? lastSettings.startTime : Date.now(),
         endIterations: 0,
@@ -368,6 +371,7 @@ function transitionScrollTo(target, parent, settings, callback){
         ease: settings.ease,
         align: settings.align,
         isWindow: settings.isWindow || defaultIsWindow,
+        maxSynchronousAlignments: maxSynchronousAlignments,
         end: end
     };
 
@@ -415,7 +419,7 @@ module.exports = function(target, settings, callback){
     settings.ease = settings.ease || function(v){return 1 - Math.pow(1 - v, v / 2);};
 
     var parent = target.parentElement,
-        parents = 0;
+        parents = 1;
 
     function done(endType){
         parents--;
@@ -436,9 +440,7 @@ module.exports = function(target, settings, callback){
         parent = parent.parentElement;
 
         if(!parent){
-            if(!parents){
-                callback && callback(COMPLETE)
-            }
+            done(COMPLETE)
             break;
         }
 

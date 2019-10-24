@@ -50,7 +50,7 @@ test('scrolls into view, 1 deep', function(t) {
                 target.getBoundingClientRect().top < window.innerHeight,
                 'target was in view'
             );
-            t.equal(type, 'complete');
+            t.equal(type, 'complete', 'Correct callback type passed');
             next();
         });
     });
@@ -85,7 +85,7 @@ test('scrolls into view, 2 deep', function(t) {
                 target.getBoundingClientRect().left < window.innerWidth,
                 'target was in view'
             );
-            t.equal(type, 'complete');
+            t.equal(type, 'complete', 'Correct callback type passed');
             next();
         });
     });
@@ -129,7 +129,7 @@ test('hijack', function(t) {
                     target2.getBoundingClientRect().left < window.innerWidth,
                     'target2 was in view'
                 );
-                t.equal(type, 'complete');
+                t.equal(type, 'complete', 'Correct callback type passed');
                 next();
             });
 
@@ -163,7 +163,7 @@ test('invalid target', function(t) {
                 }
             },
             function(type){
-                t.equal(type, 'complete');
+                t.equal(type, 'complete', 'Correct callback type passed');
                 t.pass();
             }
         );
@@ -196,7 +196,7 @@ test('body height less than scroll height', function(t) {
                 target.getBoundingClientRect().left < window.innerWidth,
                 'target was in view'
             );
-            t.equal(type, 'complete');
+            t.equal(type, 'complete', 'Correct callback type passed');
             next();
         });
     });
@@ -243,7 +243,7 @@ test('hidden scrollbars in firefox', function(t) {
                 target.getBoundingClientRect().left < window.innerWidth,
                 'target was in view'
             );
-            t.equal(type, 'complete');
+            t.equal(type, 'complete', 'Correct callback type passed');
             next();
         });
     });
@@ -272,7 +272,6 @@ test('instant scroll', function(t) {
     });
 });
 
-// Currently expected to fail. Willfix.
 test('instant scroll large depth', function(t) {
     var target;
 
@@ -307,6 +306,26 @@ test('instant scroll large depth', function(t) {
     });
 });
 
+test('impossible scroll target', function(t) {
+    var target;
+
+    t.plan(1);
+
+    queue(function(next){
+
+        crel(document.body,
+            crel('div', {'style':'height:5000px;'},
+                target = crel('span', {'style':'position:absolute; top:6000px;'})
+            )
+        );
+
+        scrollIntoView(target, { time: 0 }, function(type){
+            t.pass('Scroll still completes');
+            next();
+        });
+    });
+});
+
 test('calls callback on no scroll', function(t) {
     var target;
 
@@ -321,7 +340,7 @@ test('calls callback on no scroll', function(t) {
         );
 
         scrollIntoView(target, { isScrollable: () => false }, function(type){
-            t.pass()
+            t.pass('Callback called')
             next();
         });
     });
@@ -351,7 +370,7 @@ test('custom isWindow', function(t) {
                 target.getBoundingClientRect().top < window.innerHeight,
                 'target was in view'
             );
-            t.equal(type, 'complete');
+            t.equal(type, 'complete', 'Correct callback type passed');
             next();
         });
     });

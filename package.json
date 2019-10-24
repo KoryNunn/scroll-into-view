@@ -32,6 +32,9 @@
     "uglifyify": "^4.0.2",
     "watchify": "^3.9.0"
   },
+  "files": [
+    "*.js"
+  ],
   "dependencies": {},
   "collective": {
     "type": "opencollective",
