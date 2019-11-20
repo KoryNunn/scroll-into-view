@@ -1,4 +1,19 @@
 
+## 1.12.2 - Thu Oct 24 2019
+
+Testing ci setup - [dab9b219](korynunn@dab9b219f6ade57adf57f3b5dafdec0b5ab2b410)
+
+Update ci file for headless testing - [3219b9bf](korynunn@3219b9bf34c2e9242f5c57c1136a524d477d50f5)
+
+Add status badge - [9e6062a6](korynunn@9e6062a6ca7770ae9a5673f79660d291dc5dc111)
+
+Fix readme - [ee627fde](korynunn@ee627fde69a4eda1b4e9c1a712809f35e3e9c505)
+
+Moved badge again - [e735fe1e](korynunn@e735fe1e403eff68915b20611322f1411f1f2b56)
+
+Updated changelog - [b037ed6d](korynunn@b037ed6dbc31247c9f43a847612d66574bcbcdbf)
+
+
 ## 1.12.1 - Thu Oct 24 2019
 
 Update package description - [ca09d990](korynunn@ca09d990047bdb796ba7dc4629da715f3b215ed1)

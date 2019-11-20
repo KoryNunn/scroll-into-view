@@ -205,6 +205,11 @@ module.exports = function(target, settings, callback){
     var isScrollable = settings.isScrollable;
 
     while(parent){
+        if(parent.tagName === 'BODY'){
+            parent = parent.ownerDocument;
+            parent = parent.defaultView || parent.ownerWindow;
+        }
+        
         if(validTarget(parent, parents) && (isScrollable ? isScrollable(parent, defaultIsScrollable) : defaultIsScrollable(parent))){
             parents++;
             transitionScrollTo(target, parent, settings, done);
@@ -215,11 +220,6 @@ module.exports = function(target, settings, callback){
         if(!parent){
             done(COMPLETE)
             break;
-        }
-
-        if(parent.tagName === 'BODY'){
-            parent = parent.ownerDocument;
-            parent = parent.defaultView || parent.ownerWindow;
         }
     }
 };
