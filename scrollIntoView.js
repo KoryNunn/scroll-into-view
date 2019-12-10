@@ -123,6 +123,11 @@ function transitionScrollTo(target, parent, settings, callback){
         if(parent.parentElement && parent.parentElement._scrollSettings){
             parent.parentElement._scrollSettings.end(endType);
         }
+
+        if(settings.debug){
+            console.log('Scrolling ended with type', endType, 'for', parent)
+        }
+
         callback(endType);
         if(cancelHandler){
             parent.removeEventListener('touchstart', cancelHandler, passiveOptions);
@@ -204,12 +209,24 @@ module.exports = function(target, settings, callback){
     var validTarget = settings.validTarget || defaultValidTarget;
     var isScrollable = settings.isScrollable;
 
+    if(settings.debug){
+        console.log('About to scroll to', target)
+
+        if(!parent){
+            console.error('Target did not have a parent, is it mounted in the DOM?')
+        }
+    }
+
     while(parent){
         if(parent.tagName === 'BODY'){
             parent = parent.ownerDocument;
             parent = parent.defaultView || parent.ownerWindow;
         }
-        
+
+        if(settings.debug){
+            console.log('Scrolling parent node', parent)
+        }
+
         if(validTarget(parent, parents) && (isScrollable ? isScrollable(parent, defaultIsScrollable) : defaultIsScrollable(parent))){
             parents++;
             transitionScrollTo(target, parent, settings, done);

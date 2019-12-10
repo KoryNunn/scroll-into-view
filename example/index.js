@@ -16,7 +16,7 @@ window.addEventListener('load', function(){
 
     function align(){
         target.textContent = 'scrolling';
-        scrollIntoView(target, {time: 1000}, function(type){
+        scrollIntoView(target, { debug: true, time: 1000}, function(type){
             target.textContent = type;
         });
     }
@@ -24,14 +24,14 @@ window.addEventListener('load', function(){
 
     function uncancellableAlign(){
         target.textContent = 'scrolling';
-        scrollIntoView(target, { time: 2000, cancellable: false }, function(type){
+        scrollIntoView(target, { debug: true,  time: 2000, cancellable: false }, function(type){
             target.textContent = type;
         });
     }
 
     function ease(){
         target.textContent = 'scrolling';
-        scrollIntoView(target, {
+        scrollIntoView(target, { debug: true,
             time: 1000,
             align:{
                 top: 0,
@@ -52,6 +52,7 @@ window.addEventListener('load', function(){
     function menuAlign(){
         target.textContent = 'scrolling';
         scrollIntoView(target, {
+            debug: true,
             time: 1000,
             align:{
                 top: 0.5,

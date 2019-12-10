@@ -1,4 +1,9 @@
 
+## 1.12.3 - Thu Nov 21 2019
+
+#73 Improved scrolling in direct children of body - [1be82cb8](João Ramos@1be82cb887e1363a906925084e4b3e2183ecc133)
+
+
 ## 1.12.2 - Thu Oct 24 2019
 
 Testing ci setup - [dab9b219](korynunn@dab9b219f6ade57adf57f3b5dafdec0b5ab2b410)
