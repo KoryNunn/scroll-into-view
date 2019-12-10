@@ -93,6 +93,10 @@ scrollIntoView(someElement [, settings], function(type){
 
 Small. ~3.03 KB for the standalone.
 
+## Changelog
+
+[View Changeog](https://changelogit.korynunn.com/#korynunn/scroll-into-view)
+
 ## Testing
 
 Testing scrolling is really hard without stuff like webdriver, but what's there works ok for the moment.
