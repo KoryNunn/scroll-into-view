@@ -240,6 +240,8 @@ module.exports = function(target, settings, callback){
         if (predefinedParents) {
             if (predefinedParents.length > 0) {
                 parent = predefinedParents.splice(0, 1)[0];
+            } else {
+                parent = null;
             }
         } else {
             parent = parent.parentElement;
