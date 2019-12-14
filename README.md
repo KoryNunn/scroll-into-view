@@ -75,8 +75,6 @@ scrollIntoView(someElement, {
     cancellable: true, // default is true, set to false to prevent users from cancelling the scroll with a touch or mousewheel
 
     maxSynchronousAlignments: 3, // default is 3. Maximum number of times to try and align elements synchronously before completing.
-    
-    parents: [parentElement, otherParentElement] // optional, predefined list of scrollable parents. Can be used if scrollable parent is in shadow dom. Note, that when predefined parents are provided no other parents will be used.
 
     debug: true // default is false. This will spit out some logs that can help you understand what scroll-into-view is doing if it isn't doing what you expect.
 });
