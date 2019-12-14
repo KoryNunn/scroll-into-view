@@ -195,13 +195,8 @@ module.exports = function(target, settings, callback){
 
     settings.time = isNaN(settings.time) ? 1000 : settings.time;
     settings.ease = settings.ease || function(v){return 1 - Math.pow(1 - v, v / 2);};
-    
-    var predefinedParents = settings.parents && settings.parents.slice();
-    if (predefinedParents && predefinedParents.length === 0) {
-        predefinedParents = undefined;
-    }
 
-    var parent = predefinedParents ? predefinedParents.splice(0, 1)[0] : target.parentElement,
+    var parent = (target.assignedSlot || target).parentElement,
         parents = 1;
 
     function done(endType){
@@ -237,15 +232,7 @@ module.exports = function(target, settings, callback){
             transitionScrollTo(target, parent, settings, done);
         }
         
-        if (predefinedParents) {
-            if (predefinedParents.length > 0) {
-                parent = predefinedParents.splice(0, 1)[0];
-            } else {
-                parent = null;
-            }
-        } else {
-            parent = parent.parentElement;
-        }
+        parent = (parent.assignedSlot || parent).parentElement;
 
         if(!parent){
             done(COMPLETE)
