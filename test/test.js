@@ -375,3 +375,36 @@ test('custom isWindow', function(t) {
         });
     });
 });
+
+test('shadow DOM parent', function(t) {
+    var target;
+
+    t.plan(1);
+
+    customElements.define('scroll-test',
+        class extends HTMLElement {
+            constructor() {
+                super();
+                this.attachShadow({mode: 'open'}).appendChild(
+                    crel('div', {style: 'overflow: scroll; height: 5000px'},
+                        crel('slot', {name: "content"})
+                    )
+                );
+            }
+        }
+    );
+
+    queue(function(next){
+
+        crel(document.body,
+            crel('scroll-test', {},
+                target = crel('span', {'style':'position: absolute; top:2500px;', 'slot': 'content'}, "test")
+            )
+        );
+
+        scrollIntoView(target, {}, function(type){
+            t.pass('Callback called')
+            next();
+        });
+    });
+});
