@@ -376,10 +376,10 @@ test('custom isWindow', function(t) {
     });
 });
 
-test('shadow DOM parent', function(t) {
+test.only('shadow DOM parent', function(t) {
     var target;
 
-    t.plan(1);
+    t.plan(2);
 
     customElements.define('scroll-test',
         class extends HTMLElement {
@@ -397,13 +397,20 @@ test('shadow DOM parent', function(t) {
     queue(function(next){
 
         crel(document.body,
-            crel('scroll-test', {},
-                target = crel('span', {'style':'position: absolute; top:2500px;', 'slot': 'content'}, "test")
+            crel('div', {'style':'height:5000px;'},
+                crel('div', {'style':'height:5000px;'}),
+                crel('scroll-test', {},
+                    target = crel('span', {'style':'position: absolute; top:2500px;', 'slot': 'content'}, "test")
+                )
             )
         );
 
         scrollIntoView(target, {}, function(type){
-            t.pass('Callback called')
+            t.ok(
+                target.getBoundingClientRect().top < window.innerHeight,
+                'target was in view'
+            );
+            t.equal(type, 'complete', 'Correct callback type passed');
             next();
         });
     });
