@@ -53,10 +53,10 @@ function getTargetScrollLocation(scrollSettings, parent){
         var offsetTop = targetPosition.top - (parentPosition.top - parent.scrollTop);
         x = offsetLeft + (targetWidth * leftScalar) - parent.clientWidth * leftScalar;
         y = offsetTop + (targetHeight * topScalar) - parent.clientHeight * topScalar;
-        x = Math.max(Math.min(x, parent.scrollWidth - parent.clientWidth), 0);
-        y = Math.max(Math.min(y, parent.scrollHeight - parent.clientHeight), 0);
         x -= leftOffset;
         y -= topOffset;
+        x = Math.max(Math.min(x, parent.scrollWidth - parent.clientWidth), 0);
+        y = Math.max(Math.min(y, parent.scrollHeight - parent.clientHeight), 0);
         differenceX = x - parent.scrollLeft;
         differenceY = y - parent.scrollTop;
     }
