@@ -375,3 +375,82 @@ test('custom isWindow', function(t) {
         });
     });
 });
+
+test('shadow DOM parent', function(t) {
+    var target;
+
+    t.plan(2);
+
+    customElements.define('scroll-test',
+        class extends HTMLElement {
+            constructor() {
+                super();
+                this.attachShadow({mode: 'open'}).appendChild(
+                    crel('div', {style: 'overflow: scroll; height: 5000px'},
+                        crel('slot', {name: "content"})
+                    )
+                );
+            }
+        }
+    );
+
+    queue(function(next){
+
+        crel(document.body,
+            crel('div', {'style':'height:5000px;'},
+                crel('div', {'style':'height:5000px;'}),
+                crel('scroll-test', {},
+                    target = crel('span', {'style':'position: absolute; top:2500px;', 'slot': 'content'}, "test")
+                )
+            )
+        );
+
+        scrollIntoView(target, {}, function(type){
+            t.ok(
+                target.getBoundingClientRect().top < window.innerHeight,
+                'target was in view'
+            );
+            t.equal(type, 'complete', 'Correct callback type passed');
+            next();
+        });
+    });
+});
+
+test('align to end-element with offset', function(t) {
+    var target;
+    var parent;
+
+    t.plan(2);
+
+    queue(function(next){
+
+        crel(document.body,
+            parent = crel('div', {'style':'font-size: 20px; height:200px; overflow: scroll;'},
+                crel('p', 'Text'),
+                crel('p', 'Text'),
+                crel('p', 'Text'),
+                crel('p', 'Text'),
+                crel('p', 'Text'),
+                crel('p', 'Text'),
+                crel('p', 'Text'),
+                crel('p', 'Text'),
+                target = crel('div', 'Target')
+            )
+        );
+
+        scrollIntoView(target, {
+            align: {
+                topOffset: 100
+            }
+        }, function(type){
+            t.ok(
+                target.getBoundingClientRect().top < parent.offsetHeight &&
+                target.getBoundingClientRect().left < parent.offsetWidth,
+                'target was in view'
+            );
+            t.equal(type, 'complete', 'Correct callback type passed');
+            next();
+        });
+    });
+});
+
