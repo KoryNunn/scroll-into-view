@@ -376,7 +376,7 @@ test('custom isWindow', function(t) {
     });
 });
 
-test.only('shadow DOM parent', function(t) {
+test('shadow DOM parent', function(t) {
     var target;
 
     t.plan(2);
