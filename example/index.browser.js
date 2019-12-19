@@ -281,10 +281,10 @@ function getTargetScrollLocation(scrollSettings, parent){
         var offsetTop = targetPosition.top - (parentPosition.top - parent.scrollTop);
         x = offsetLeft + (targetWidth * leftScalar) - parent.clientWidth * leftScalar;
         y = offsetTop + (targetHeight * topScalar) - parent.clientHeight * topScalar;
-        x = Math.max(Math.min(x, parent.scrollWidth - parent.clientWidth), 0);
-        y = Math.max(Math.min(y, parent.scrollHeight - parent.clientHeight), 0);
         x -= leftOffset;
         y -= topOffset;
+        x = Math.max(Math.min(x, parent.scrollWidth - parent.clientWidth), 0);
+        y = Math.max(Math.min(y, parent.scrollHeight - parent.clientHeight), 0);
         differenceX = x - parent.scrollLeft;
         differenceY = y - parent.scrollTop;
     }
@@ -424,7 +424,7 @@ module.exports = function(target, settings, callback){
     settings.time = isNaN(settings.time) ? 1000 : settings.time;
     settings.ease = settings.ease || function(v){return 1 - Math.pow(1 - v, v / 2);};
 
-    var parent = (target.assignedSlot || target).parentElement,
+    var parent = target.parentElement,
         parents = 1;
 
     function done(endType){
@@ -459,8 +459,8 @@ module.exports = function(target, settings, callback){
             parents++;
             transitionScrollTo(target, parent, settings, done);
         }
-        
-        parent = (parent.assignedSlot || parent).parentElement;
+
+        parent = parent.parentElement;
 
         if(!parent){
             done(COMPLETE)
