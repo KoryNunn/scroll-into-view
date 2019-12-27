@@ -415,3 +415,42 @@ test('shadow DOM parent', function(t) {
         });
     });
 });
+
+test('align to end-element with offset', function(t) {
+    var target;
+    var parent;
+
+    t.plan(2);
+
+    queue(function(next){
+
+        crel(document.body,
+            parent = crel('div', {'style':'font-size: 20px; height:200px; overflow: scroll;'},
+                crel('p', 'Text'),
+                crel('p', 'Text'),
+                crel('p', 'Text'),
+                crel('p', 'Text'),
+                crel('p', 'Text'),
+                crel('p', 'Text'),
+                crel('p', 'Text'),
+                crel('p', 'Text'),
+                target = crel('div', 'Target')
+            )
+        );
+
+        scrollIntoView(target, {
+            align: {
+                topOffset: 100
+            }
+        }, function(type){
+            t.ok(
+                target.getBoundingClientRect().top < parent.offsetHeight &&
+                target.getBoundingClientRect().left < parent.offsetWidth,
+                'target was in view'
+            );
+            t.equal(type, 'complete', 'Correct callback type passed');
+            next();
+        });
+    });
+});
+
