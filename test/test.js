@@ -386,7 +386,7 @@ test('shadow DOM parent', function(t) {
             constructor() {
                 super();
                 this.attachShadow({mode: 'open'}).appendChild(
-                    crel('div', {style: 'overflow: scroll; height: 1000px; position: relative'},
+                    crel('div', {style: 'overflow: scroll; height: 100%; position: relative'},
                         crel('slot', {name: "content"})
                     )
                 );
