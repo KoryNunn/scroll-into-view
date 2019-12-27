@@ -386,7 +386,7 @@ test('shadow DOM parent', function(t) {
             constructor() {
                 super();
                 this.attachShadow({mode: 'open'}).appendChild(
-                    crel('div', {style: 'overflow: scroll; height: 5000px'},
+                    crel('div', {style: 'overflow: scroll; height: 1000px; position: relative'},
                         crel('slot', {name: "content"})
                     )
                 );
@@ -397,10 +397,10 @@ test('shadow DOM parent', function(t) {
     queue(function(next){
 
         crel(document.body,
-            crel('div', {'style':'height:5000px;'},
-                crel('div', {'style':'height:5000px;'}),
-                crel('scroll-test', {},
-                    target = crel('span', {'style':'position: absolute; top:2500px;', 'slot': 'content'}, "test")
+            crel('div', {'style': 'height:5000px;'},
+                crel('div', {'style': 'height:4000px;'}),
+                crel('scroll-test', {style: 'height:1000px; overflow: hidden; display: block'},
+                    target = crel('div', {'style': 'position: absolute; top:4500px; height: 500px', 'slot': 'content'}, "target")
                 )
             )
         );
