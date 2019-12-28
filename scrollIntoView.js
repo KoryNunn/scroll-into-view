@@ -179,6 +179,24 @@ function defaultValidTarget(){
     return true;
 }
 
+function findParentElement(el){
+
+    var parent = el.assignedSlot;
+    if (parent) {
+        return parent.parentElement;
+    }
+    
+    parent = el.parentElement;
+    if (parent) {
+        return parent;
+    }
+
+    parent = el.getRootNode && el.getRootNode();
+    if (parent && parent.nodeType === 11) {
+        return parent.host;
+    }
+}
+
 module.exports = function(target, settings, callback){
     if(!target){
         return;
@@ -196,7 +214,7 @@ module.exports = function(target, settings, callback){
     settings.time = isNaN(settings.time) ? 1000 : settings.time;
     settings.ease = settings.ease || function(v){return 1 - Math.pow(1 - v, v / 2);};
 
-    var parent = target.parentElement,
+    var parent = findParentElement(target),
         parents = 1;
 
     function done(endType){
@@ -232,7 +250,7 @@ module.exports = function(target, settings, callback){
             transitionScrollTo(target, parent, settings, done);
         }
 
-        parent = parent.parentElement;
+        parent = findParentElement(parent);
 
         if(!parent){
             done(COMPLETE)
