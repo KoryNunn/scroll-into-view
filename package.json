@@ -17,7 +17,9 @@
     "watchExample": "watchify ./example/index.js -d -o ./example/index.browser.js",
     "prepublish": "npm run-script build",
     "serve": "static example",
-    "start": "npm-run-all -p serve watchExample"
+    "serveTest": "static test",
+    "start": "npm-run-all -p serve watchExample",
+    "startTest": "npm-run-all -p serveTest watchTest"
   },
   "author": "",
   "license": "MIT",

@@ -180,20 +180,22 @@ function defaultValidTarget(){
 }
 
 function findParentElement(el){
-
-    var parent = el.assignedSlot;
-    if (parent) {
-        return parent.parentElement;
-    }
-    
-    parent = el.parentElement;
-    if (parent) {
-        return parent;
+    if (el.assignedSlot) {
+        return findParentElement(el.assignedSlot);
     }
 
-    parent = el.getRootNode && el.getRootNode();
-    if (parent && parent.nodeType === 11) {
-        return parent.host;
+    if (el.parentElement) {
+        if(el.parentElement.tagName === 'BODY'){
+            return el.parentElement.ownerDocument.defaultView || el.parentElement.ownerDocument.ownerWindow;
+        }
+        return el.parentElement;
+    }
+
+    if (el.getRootNode){
+        var parent = el.getRootNode()
+        if(parent.nodeType === 11) {
+            return parent.host;
+        }
     }
 }
 
@@ -236,11 +238,6 @@ module.exports = function(target, settings, callback){
     }
 
     while(parent){
-        if(parent.tagName === 'BODY'){
-            parent = parent.ownerDocument;
-            parent = parent.defaultView || parent.ownerWindow;
-        }
-
         if(settings.debug){
             console.log('Scrolling parent node', parent)
         }
