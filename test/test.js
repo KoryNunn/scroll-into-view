@@ -454,3 +454,44 @@ test('align to end-element with offset', function(t) {
     });
 });
 
+test('stacking calls resolve in a predictable amount of time', function(t) {
+    var target1;
+    var target2;
+
+    t.plan(2);
+
+    queue(function(next){
+
+        crel(document.body,
+            crel('div', {'style':'height:5000px;'},
+                target1 = crel('span', {'style':'position:absolute; top:2500px;'}),
+                target2 = crel('span', {'style':'position:absolute; top:0;'})
+            )
+        );
+
+        var startTime = Date.now();
+
+        scrollIntoView(target1, { time: 1000 });
+
+        setTimeout(function(){
+            scrollIntoView(target2, { time: 1000 });
+        }, 500);
+
+        setTimeout(function(){
+            scrollIntoView(target1, { time: 1000 }, function(type){
+                t.ok(
+                    target1.getBoundingClientRect().top < window.innerHeight,
+                    'target was in view'
+                );
+
+                var elapsedTime = Date.now() - startTime;
+
+                t.ok(
+                    elapsedTime > 1900 && elapsedTime < 2100,
+                    'Expected elapsed time'
+                );
+                next();
+            });
+        }, 1000);
+    });
+});

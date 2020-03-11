@@ -120,6 +120,7 @@ function transitionScrollTo(target, parent, settings, callback){
 
     function end(endType){
         parent._scrollSettings = null;
+
         if(parent.parentElement && parent.parentElement._scrollSettings){
             parent.parentElement._scrollSettings.end(endType);
         }
@@ -142,10 +143,10 @@ function transitionScrollTo(target, parent, settings, callback){
     }
 
     parent._scrollSettings = {
-        startTime: lastSettings ? lastSettings.startTime : Date.now(),
+        startTime: now,
         endIterations: 0,
         target: target,
-        time: settings.time + (lastSettings ? now - lastSettings.startTime : 0),
+        time: settings.time,
         ease: settings.ease,
         align: settings.align,
         isWindow: settings.isWindow || defaultIsWindow,
