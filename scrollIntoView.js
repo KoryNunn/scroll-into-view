@@ -36,6 +36,10 @@ function getTargetScrollLocation(scrollSettings, parent){
         leftScalar = leftAlign,
         topScalar = topAlign;
 
+    if (!target.parentNode) {
+        return null;
+    }
+
     if(scrollSettings.isWindow(parent)){
         targetWidth = Math.min(targetPosition.width, parent.innerWidth);
         targetHeight = Math.min(targetPosition.height, parent.innerHeight);
@@ -81,6 +85,11 @@ function animate(parent){
     var location = getTargetScrollLocation(scrollSettings, parent),
         time = Date.now() - scrollSettings.startTime,
         timeValue = Math.min(1 / scrollSettings.time * time, 1);
+
+    if (!location) {
+        parent._scrollSettings = null;
+        return scrollSettings.end(COMPLETE);
+    }
 
     if(scrollSettings.endIterations >= maxSynchronousAlignments){
         setElementScroll(parent, location.x, location.y);
