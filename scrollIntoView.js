@@ -163,6 +163,8 @@ function transitionScrollTo(target, parent, settings, callback){
     if(idle){
         animate(parent);
     }
+
+    return cancelHandler
 }
 
 function defaultIsScrollable(element){
@@ -238,6 +240,8 @@ module.exports = function(target, settings, callback){
         }
     }
 
+    var cancel;
+
     while(parent){
         if(settings.debug){
             console.log('Scrolling parent node', parent)
@@ -245,7 +249,7 @@ module.exports = function(target, settings, callback){
 
         if(validTarget(parent, parents) && (isScrollable ? isScrollable(parent, defaultIsScrollable) : defaultIsScrollable(parent))){
             parents++;
-            transitionScrollTo(target, parent, settings, done);
+            cancel = transitionScrollTo(target, parent, settings, done);
         }
 
         parent = findParentElement(parent);
@@ -255,4 +259,6 @@ module.exports = function(target, settings, callback){
             break;
         }
     }
+
+    return cancel;
 };
