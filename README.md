@@ -89,6 +89,16 @@ scrollIntoView(someElement [, settings], function(type){
 });
 ```
 
+You can cancel the current scroll by using the cancel function returned by scrollIntoView:
+
+```javascript
+var cancel = scrollIntoView(someElement);
+
+// ... later ...
+
+cancel()
+```
+
 ## Size
 
 Small. ~3.03 KB for the standalone.
