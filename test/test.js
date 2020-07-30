@@ -56,6 +56,34 @@ test('scrolls into view, 1 deep', function(t) {
     });
 });
 
+test('cancel scroll', function(t) {
+    var target;
+
+    t.plan(2);
+
+    queue(function(next){
+
+        crel(document.body,
+            crel('div', {'style':'height:5000px;'},
+                target = crel('span', {'style':'position:absolute; top:2500px;'})
+            )
+        );
+
+        var cancel = scrollIntoView(target, function(type){
+            t.notOk(
+                target.getBoundingClientRect().top < window.innerHeight,
+                'target was not in view'
+            );
+            t.equal(type, 'canceled', 'Correct callback type passed');
+            next();
+        });
+
+        setTimeout(function(){
+            cancel()
+        })
+    });
+});
+
 test('scrolls into view, 2 deep', function(t) {
     var target;
 
