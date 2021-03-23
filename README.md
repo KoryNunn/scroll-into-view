@@ -64,7 +64,7 @@ scrollIntoView(someElement, {
         // By default scroll-into-view will only attempt to scroll elements that have overflow not set to `"hidden"` and who's scroll width/height is larger than their client height.
         // You can override this check by passing an `isScrollable` function to settings:
 
-        return defaultIsScrollable(target) || ~target.className.indexOf('scrollable');
+        return defaultIsScrollable(target) || target !== window && ~target.className.indexOf('scrollable');
     },
 
     isWindow: function(target){
