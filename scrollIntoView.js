@@ -10,6 +10,9 @@ function raf(task){
 }
 
 function setElementScroll(element, x, y){
+    Math.max(0, x);
+    Math.max(0, y);
+
     if(element.self === element){
         element.scrollTo(x, y);
     }else{
@@ -43,6 +46,8 @@ function getTargetScrollLocation(scrollSettings, parent){
         y = targetPosition.top + parent.pageYOffset - parent.innerHeight * topScalar + targetHeight * topScalar;
         x -= leftOffset;
         y -= topOffset;
+        x = scrollSettings.align.lockX ? parent.pageXOffset : x;
+        y = scrollSettings.align.lockY ? parent.pageYOffset : y;
         differenceX = x - parent.pageXOffset;
         differenceY = y - parent.pageYOffset;
     }else{
@@ -57,6 +62,8 @@ function getTargetScrollLocation(scrollSettings, parent){
         y -= topOffset;
         x = Math.max(Math.min(x, parent.scrollWidth - parent.clientWidth), 0);
         y = Math.max(Math.min(y, parent.scrollHeight - parent.clientHeight), 0);
+        x = scrollSettings.align.lockX ? parent.scrollLeft : x;
+        y = scrollSettings.align.lockY ? parent.scrollTop : y;
         differenceX = x - parent.scrollLeft;
         differenceY = y - parent.scrollTop;
     }
@@ -97,7 +104,10 @@ function animate(parent){
 
     if(time >= scrollSettings.time){
         scrollSettings.endIterations++;
-        return animate(parent);
+        // Align ancestor synchronously
+        scrollSettings.scrollAncestor && animate(scrollSettings.scrollAncestor);
+        animate(parent);
+        return;
     }
 
     raf(animate.bind(null, parent));
@@ -107,7 +117,7 @@ function defaultIsWindow(target){
     return target.self === target
 }
 
-function transitionScrollTo(target, parent, settings, callback){
+function transitionScrollTo(target, parent, settings, scrollAncestor, callback){
     var idle = !parent._scrollSettings,
         lastSettings = parent._scrollSettings,
         now = Date.now(),
@@ -151,7 +161,8 @@ function transitionScrollTo(target, parent, settings, callback){
         align: settings.align,
         isWindow: settings.isWindow || defaultIsWindow,
         maxSynchronousAlignments: maxSynchronousAlignments,
-        end: end
+        end: end,
+        scrollAncestor
     };
 
     if(!('cancellable' in settings) || settings.cancellable){
@@ -218,6 +229,7 @@ module.exports = function(target, settings, callback){
 
     settings.time = isNaN(settings.time) ? 1000 : settings.time;
     settings.ease = settings.ease || function(v){return 1 - Math.pow(1 - v, v / 2);};
+    settings.align = settings.align || {};
 
     var parent = findParentElement(target),
         parents = 1;
@@ -240,7 +252,7 @@ module.exports = function(target, settings, callback){
         }
     }
 
-    var cancel;
+    var scrollingElements = [];
 
     while(parent){
         if(settings.debug){
@@ -249,7 +261,7 @@ module.exports = function(target, settings, callback){
 
         if(validTarget(parent, parents) && (isScrollable ? isScrollable(parent, defaultIsScrollable) : defaultIsScrollable(parent))){
             parents++;
-            cancel = transitionScrollTo(target, parent, settings, done);
+            scrollingElements.push(parent);
         }
 
         parent = findParentElement(parent);
@@ -260,5 +272,5 @@ module.exports = function(target, settings, callback){
         }
     }
 
-    return cancel;
+    return scrollingElements.reduce((cancel, parent, index) => transitionScrollTo(target, parent, settings, scrollingElements[index + 1], done), null);
 };

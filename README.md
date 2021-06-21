@@ -56,7 +56,9 @@ scrollIntoView(someElement, {
         top: 0 to 1, default 0.5 (center)
         left: 0 to 1, default 0.5 (center)
         topOffset: pixels to offset top alignment
-        leftOffset: pixels to offset left alignment
+        leftOffset: pixels to offset left alignment,
+        lockX: boolean to prevent X scrolling,
+        lockY: boolean to prevent Y scrolling
     },
 
     isScrollable: function(target, defaultIsScrollable){
