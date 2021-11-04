@@ -272,5 +272,7 @@ module.exports = function(target, settings, callback){
         }
     }
 
-    return scrollingElements.reduce((cancel, parent, index) => transitionScrollTo(target, parent, settings, scrollingElements[index + 1], done), null);
+    return scrollingElements.reduce(function(cancel, parent, index) {
+        return transitionScrollTo(target, parent, settings, scrollingElements[index + 1], done);
+    }, null);
 };
