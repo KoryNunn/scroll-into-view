@@ -131,6 +131,12 @@ If you want to use this module without browserify, you can use `scrollIntoView.m
 </script>
 ```
 
+# Browser support
+
+All evergreen browsers are supported.
+
+Yes this means IE11 is not supported, scroll-into-view has the same support targets as microsoft: https://www.zdnet.com/article/microsoft-sets-deadline-for-end-of-support-of-ie-11-by-365-apps/ 
+
 ## Contributors
 
 This project exists thanks to all the people who contribute.
