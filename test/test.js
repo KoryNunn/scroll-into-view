@@ -357,7 +357,7 @@ test('impossible scroll target', function(t) {
 test('calls callback on no scroll', function(t) {
     var target;
 
-    t.plan(1);
+    t.plan(2);
 
     queue(function(next){
 
@@ -367,8 +367,11 @@ test('calls callback on no scroll', function(t) {
             )
         );
 
+        var startTime = Date.now();
+
         scrollIntoView(target, { isScrollable: () => false }, function(type){
-            t.pass('Callback called')
+            t.pass('Callback called');
+            t.ok(Date.now() - startTime < 10, 'Callback did not wait for animation time.');
             next();
         });
     });

@@ -318,7 +318,7 @@ function animate(parent){
         timeValue = Math.min(1 / scrollSettings.time * time, 1);
 
     if(scrollSettings.endIterations >= maxSynchronousAlignments){
-        setElementScroll(parent, scrollSettings.align.lockX ? null : location.x, scrollSettings.align.lockY ? null : location.y);
+        setElementScroll(parent, location.x, location.y);
         parent._scrollSettings = null;
         return scrollSettings.end(COMPLETE);
     }
