@@ -11,7 +11,7 @@
     "url": "git@github.com:KoryNunn/scroll-into-view.git"
   },
   "scripts": {
-    "test": "browserify ./test/test.js | tape-run",
+    "test": "browserify -d ./test/test.js > ./test/test.browser.js; cat ./test/test.browser.js | tape-run",
     "build": "browserify ./example/index.js > ./example/index.browser.js & browserify --bare -g uglifyify ./standalone.js > ./scrollIntoView.min.js",
     "watchTest": "watchify ./test/test.js -d -o ./test/test.browser.js",
     "watchExample": "watchify ./example/index.js -d -o ./example/index.browser.js",

@@ -427,7 +427,7 @@ function findParentElement(el){
     }
 
     if (el.parentElement) {
-        if(el.parentElement.tagName === 'BODY'){
+        if(el.parentElement.tagName.toLowerCase() === 'body'){
             return el.parentElement.ownerDocument.defaultView || el.parentElement.ownerDocument.ownerWindow;
         }
         return el.parentElement;
